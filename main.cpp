@@ -8,6 +8,13 @@ long mygettime ( )
     return tp.tv_sec;
 }
 
+CliOutStream ocli;
+
+void AllDownloadConfig (bool isDefaultDatabase)
+{
+    MoPipeMode::DownloadConfig();
+}
+
 int main()
 {
 	printf("-----\n");

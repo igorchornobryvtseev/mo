@@ -471,9 +471,9 @@ Mo::Mo( )
     _transaction._asInt          = 0;
     _transaction._asBits.created = true;
 
-    ValueTimeSecs valueTime;
-    valueTime.UpdateBaseTime( );
-    _elapsedBaseTimeSecs = valueTime.GetBaseTime( );
+    // ValueTimeSecs valueTime;
+    // valueTime.UpdateBaseTime( );
+    // _elapsedBaseTimeSecs = valueTime.GetBaseTime( );
 }
 
 T_MoType Mo::Type( ) const
@@ -805,9 +805,10 @@ void Mo::Cli_PrintStandardHelpSet(AttrListSet* attrListP)
 
 void Mo::Cli_PrintStandardShow(CliModifierShow* modifierP, AttrArray* infoTableAttrsP)
 {
-    if ( modifierP->IsStats( ) || modifierP->IsStatsSummary( ) )
-        Cli_PrintStandardShowStatistics(modifierP);
-    else if ( infoTableAttrsP != nullptr )
+    // if ( modifierP->IsStats( ) || modifierP->IsStatsSummary( ) )
+    //     Cli_PrintStandardShowStatistics(modifierP);
+    // else 
+    if ( infoTableAttrsP != nullptr )
         Cli_PrintStandardShowInfoAsTable(infoTableAttrsP);
     else
         Cli_PrintStandardShowInfoAsList(modifierP);

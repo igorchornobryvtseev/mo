@@ -185,7 +185,7 @@ private:
 
 MyOutStream& operator<< (MyOutStream& dstR, const char* str);
 MyOutStream& operator<< (MyOutStream& dstR, const MyString& str);
-MyOutStream& operator<< (MyOutStream& dstR, std::string_view str);
+// MyOutStream& operator<< (MyOutStream& dstR, std::string_view str);
 MyOutStream& operator<< (MyOutStream& dstR, const std::string& str);
 //MyOutStream& operator<< (MyOutStream& dstR, const fs::path& path);
 MyOutStream& operator<< (MyOutStream& dstR, UINT64 src);

@@ -122,7 +122,7 @@ public:
     // word is part of a list in Cli if it can be separated by a comma or a period
     virtual bool IsWordInCliPartOfList( ) = 0;
 
-    virtual void DoGetXmlHelp(Xml* xmlP);
+    // virtual void DoGetXmlHelp(Xml* xmlP);
 
     // virtual void DoGetSnmp (SnmpVariable* varP) { (void)varP; }
 
@@ -157,7 +157,7 @@ public:
 
     bool IsWordInCliPartOfList ( ) override { return false; }
 
-    void DoGetXmlHelp (Xml* xmlP) override { GetOriginalValue( )->DoGetXmlHelp(xmlP); }
+    // void DoGetXmlHelp (Xml* xmlP) override { GetOriginalValue( )->DoGetXmlHelp(xmlP); }
 
     // void DoGetSnmp (SnmpVariable* varP) override { GetOriginalValue( )->DoGetSnmp(varP); }
 
@@ -420,7 +420,7 @@ public:
 
     void DoGetCliHelp ( ) override { ocli.Print("%sinteger %d..%d", Separator( ), MIN_VAL, MAX_VAL); }
 
-    void DoGetXmlHelp (Xml* xmlP) override { xmlP->Print("<format type=\"integer\" min=\"%d\" max=\"%d\"/>", MIN_VAL, MAX_VAL); }
+    // void DoGetXmlHelp (Xml* xmlP) override { xmlP->Print("<format type=\"integer\" min=\"%d\" max=\"%d\"/>", MIN_VAL, MAX_VAL); }
 };
 
 // ***************************************************************
@@ -950,14 +950,14 @@ public:
 class ValueIpAndMask : public ValueIp
 {
 public:
-    uint32_t GetMask( ) const;
-    uint32_t GetMaskAsPrefix( ) const;
+    UINT32 GetMask( ) const;
+    UINT32 GetMaskAsPrefix( ) const;
 
 protected:
     void DoGetCli(MyOutStream* outP) override;
     void DoSetCli(WordReader* inP) override;
 
-    uint32_t _mask {0};
+    UINT32 _mask {0};
 };
 
 // ***************************************************************
@@ -1176,33 +1176,33 @@ public:
 
 // ***************************************************************
 
-class ValueTimeSecs : public Value
-{
-public:
-    ValueTimeSecs( ) : _baseTimeSecs(0) { }
+// class ValueTimeSecs : public Value
+// {
+// public:
+//     ValueTimeSecs( ) : _baseTimeSecs(0) { }
 
-    ValueTimeSecs(time_t baseTimeSecs) : _baseTimeSecs(baseTimeSecs) { }
+//     ValueTimeSecs(time_t baseTimeSecs) : _baseTimeSecs(baseTimeSecs) { }
 
-    void UpdateBaseTime( );
+//     void UpdateBaseTime( );
 
-    // void DoGetSnmp (SnmpVariable* outP) override { *outP << GetUint32( ) * 100; }
+//     // void DoGetSnmp (SnmpVariable* outP) override { *outP << GetUint32( ) * 100; }
 
-    time_t GetBaseTime ( ) { return _baseTimeSecs; }
+//     time_t GetBaseTime ( ) { return _baseTimeSecs; }
 
-    bool DoGetUint32 (UINT32* dstP) override
-    {
-        *dstP = mygettime( ) - _baseTimeSecs;
-        return true;
-    }
+//     bool DoGetUint32 (UINT32* dstP) override
+//     {
+//         *dstP = mygettime( ) - _baseTimeSecs;
+//         return true;
+//     }
 
-    void DoGetCli(MyOutStream* outP) override;
-    void DoSetCli(WordReader* inP) override;
-    bool IsWordInCliPartOfList( ) override;
+//     void DoGetCli(MyOutStream* outP) override;
+//     void DoSetCli(WordReader* inP) override;
+//     bool IsWordInCliPartOfList( ) override;
 
-    time_t _baseTimeSecs;
+//     time_t _baseTimeSecs;
 
-    //  char    itsBuff[8]; // for SNMP only
-};
+//     //  char    itsBuff[8]; // for SNMP only
+// };
 
 // ***************************************************************
 

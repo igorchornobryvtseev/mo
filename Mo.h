@@ -246,7 +246,7 @@ public:
     void Cli_PrintStandardShowInfoAsTable(AttrArray* infoTableAttrsP);
     void Cli_PrintStandardShowStatistics(CliModifierShow* modifierP);
 
-    virtual void DoSampleXmlShow(Xml* xmlP, MyString* instancesP);
+    //virtual void DoSampleXmlShow(Xml* xmlP, MyString* instancesP);
 
     ///////////////////////////////////////////////////
     ///////////////////////////////////////////////////

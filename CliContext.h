@@ -9,6 +9,9 @@
 // #include "MyString.h"
 #include "RetStatus.h"
 
+#include "CaSharedRegion.h"
+//#include "CliMo.h"
+
 struct MsgCliTab;
 class CliContext;
 class CliCmd;
@@ -163,6 +166,7 @@ public:
         if ( nowAutoComplete )
             ReturnAutoComplete(nullptr);
         return nowAutoComplete;
+        return false;
     }
 
     void ReturnErrorAndPrint (RetStatus status)
