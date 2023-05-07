@@ -1,6 +1,7 @@
 #pragma once
 
 //#include <fmt/format.h>
+#include "igorc_common.h"
 
 #include <algorithm>
 #include <cstdarg>
@@ -68,7 +69,7 @@ public:
 
     operator std::string_view ( ) const noexcept { return view( ); }
 
-    std::string_view view ( ) const { return {AsStr( ), GetLen( )}; }
+    std::string_view view ( ) const { return {AsStr( ), static_cast<size_t>(GetLen( ))}; }
 
     bool AsInt(int* intP);
     int  AsInt( );
@@ -90,16 +91,16 @@ public:
     int MaxCommonPrefix(const char* secondP, MyString* CommonSubStr);
     int MaxCommonPrefix(const MyString& secondR, MyString* CommonSubStr);
 
-    int  FindSubstr(int startPos, char* pattern);
+    int  FindSubstr(int startPos, const char* pattern);
     void RemoveSubstr(int startPos, int len);
     void RemoveWord(int startPos);
-    void InsertSubstr(int startPos, char* srcP);
+    void InsertSubstr(int startPos, const char* srcP);
     void StripQuotes( );
 
     MyString& StripStart(char* patternP);
     MyString& StripEnd(char* patternP);
 
-    bool SubstituteSubstr(char* pattern, char* newSubstr);
+    bool SubstituteSubstr(const char* pattern, const char* newSubstr);
 
     void ToUpper(int index);
 

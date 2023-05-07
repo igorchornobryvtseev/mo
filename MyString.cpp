@@ -45,7 +45,7 @@ int MyString::AsInt( )
     return isOk ? value : -1;
 }
 
-int MyString::FindSubstr(int startPos, char* pattern)
+int MyString::FindSubstr(int startPos, const char* pattern)
 {
     char* startP = strstr(AsStr( ) + startPos, pattern);
     if ( startP == nullptr )
@@ -54,7 +54,7 @@ int MyString::FindSubstr(int startPos, char* pattern)
     return pos;
 }
 
-bool MyString::SubstituteSubstr(char* pattern, char* newSubstr)
+bool MyString::SubstituteSubstr(const char* pattern, const char* newSubstr)
 {
     int pos = FindSubstr(0, pattern);
     if ( pos < 0 )
@@ -155,7 +155,7 @@ bool MyString::LoadFile(char* pathP)
     return true;
 }
 
-void MyString::InsertSubstr(int startPos, char* srcP)
+void MyString::InsertSubstr(int startPos, const char* srcP)
 {
     UINT32 insertLen = strlen(srcP);
     if ( (startPos + insertLen) > GetMaxLen( ) )

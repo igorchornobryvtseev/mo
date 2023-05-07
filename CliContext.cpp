@@ -8,7 +8,7 @@
 
 //////////////////////////////////////////////////////////
 
-bool WordReader::TestExisting(char* sampleP)
+bool WordReader::TestExisting(const char* sampleP)
 {
     UINT32 keepPos = GetPos( );
     while ( ReadWord( ).ok( ) ) {
@@ -21,7 +21,7 @@ bool WordReader::TestExisting(char* sampleP)
     return false;
 }
 
-bool WordReader::TestNext(char* sampleP)
+bool WordReader::TestNext(const char* sampleP)
 {
     UINT32 keepPos = GetPos( );
     bool   result  = ReadWord( ).ok( ) ? (_dst == sampleP) : false;
@@ -29,7 +29,7 @@ bool WordReader::TestNext(char* sampleP)
     return result;
 }
 
-bool IsTerm (char cur, char* termsP)
+bool IsTerm (char cur, const char* termsP)
 {
     for ( ; *termsP; termsP++ ) {
         if ( *termsP == cur )
@@ -38,7 +38,7 @@ bool IsTerm (char cur, char* termsP)
     return false;
 }
 
-RetStatus WordReader::ReadWord(char* termsP)
+RetStatus WordReader::ReadWord(const char* termsP)
 {
     _dst.Clean( );
 

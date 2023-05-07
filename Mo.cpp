@@ -643,8 +643,8 @@ MyOutStream& operator<< (MyOutStream& dstR, FOCUS aFocus)
 
 MyOutStream& operator<< (MyOutStream& dstR, NAME aName)
 {
-    Mo*   moP   = dstR.GetMoFocus( );
-    char* nameP = moP->FindAttr(aName._attrId)->GetNameP( );
+    Mo*         moP   = dstR.GetMoFocus( );
+    const char* nameP = moP->FindAttr(aName._attrId)->GetNameP( );
 
     if ( aName._width < 0 )
         dstR.Print(nameP);

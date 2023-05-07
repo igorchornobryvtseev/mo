@@ -1,8 +1,8 @@
 #pragma once
 
 #include <stdlib.h>
-#include <strings.h>
 #include <string.h>
+#include <strings.h> // legacy 
 #include <vector>
 
 typedef int  UINT8;

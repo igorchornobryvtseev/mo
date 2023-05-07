@@ -213,16 +213,16 @@ bool IsDebugMode ( )
 class CliCmd
 {
 public:
-    CliCmd(CmdType cmdType, char* cmdName, bool isDebug = false) : _cmdType(cmdType), _cmdName(cmdName), _isDebug(isDebug) { }
+    CliCmd(CmdType cmdType, const char* cmdName, bool isDebug = false) : _cmdType(cmdType), _cmdName(cmdName), _isDebug(isDebug) { }
 
     virtual ~CliCmd( ) = default;
 
     virtual void Run(CliContext* contextP) = 0;
     virtual void PrintCmdHelp( )           = 0;
 
-    CmdType _cmdType;
-    char*   _cmdName;
-    bool    _isDebug;
+    CmdType         _cmdType;
+    const char*     _cmdName;
+    bool            _isDebug;
 };
 
 void PrintCmdHelp (CliCmd* cmdP)
@@ -2277,7 +2277,7 @@ void AdapterCli (CliContext& context)
             char* cliVarValue = cliVars.Find(name.AsStr( ) + 1);  // do not use starting $
 
             if ( cliVarValue == nullptr ) {
-                printf("Cannot find '%s'. Operation failed.\n", name);
+                printf("Cannot find '%s'. Operation failed.\n", name.AsStr());
                 // cliP->ReturnErrorAndPrint(RetStatus {"Cannot find {}. Operation failed.", name});
                 PrintErrorToFile(context);
                 return;

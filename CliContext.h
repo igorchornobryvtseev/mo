@@ -42,7 +42,7 @@ private:
 
     MyStringT<64> _word;  // word or number
 
-    static ListElement FromCli (Type type, char* wordP)
+    static ListElement FromCli (Type type, const char* wordP)
     {
         ListElement element;
         element._type   = type;
@@ -123,7 +123,7 @@ public:
         return (Cur( ) == 0);
     }
 
-    RetStatus ReadWord(char* termsP = " ");
+    RetStatus ReadWord(const char* termsP = " ");
 
     ListElement ReadListElement( );
 
@@ -143,8 +143,8 @@ public:
         return *this;
     }
 
-    bool TestNext(char* sampleP);
-    bool TestExisting(char* sampleP);
+    bool TestNext(const char* sampleP);
+    bool TestExisting(const char* sampleP);
 
     bool IsEnter ( ) { return IsExeMode( ) && IsEol( ); }
 

@@ -282,7 +282,7 @@ public:
 
         bool IsInfo ( ) { return IsHidden( ) ? false : (_flags & FLAG_INFO); }
 
-        char* GetNameP ( ) { return _nameP; }
+        const char* GetNameP ( ) { return _nameP; }
 
         AttrId __Id ( ) { return _attrId; }
 
@@ -294,7 +294,7 @@ public:
         static Value* GetInvalidValue( );
 
         AttrId _attrId {T_AttrType::ATTR_INVALID};
-        char*  _nameP {"????"};
+        const char*  _nameP {"????"};
         long   _offset {0};
         UINT8  _flags {NO_CLI};
     };
