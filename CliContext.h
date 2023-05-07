@@ -337,9 +337,9 @@ public:
     CliTable& Cell(Value& srcR);
     CliTable& Cell(int src);
     // CliTable& Cell(Mac src);
-    CliTable& CellCounter64(UINT64 value);
-    CliTable& CellCounterSigned64(UINT64 value);
-    CliTable& CellDateAndTime(time_t value);
+    // CliTable& CellCounter64(UINT64 value);
+    // CliTable& CellCounterSigned64(UINT64 value);
+    // CliTable& CellDateAndTime(time_t value);
 
     enum { MAX_COLUMNS = 20 };
 

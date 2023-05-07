@@ -836,30 +836,30 @@ private:
     IpV6Address _keepValue;
 };
 #endif
-class ValueIp : public ValueLong
-{
-public:
-    ValueIp( );
+// class ValueIp : public ValueLong
+// {
+// public:
+//     ValueIp( );
 
-    IpAddress GetIp( ) const;
-    void      SetIp(IpAddress aValue);
+//     IpAddress GetIp( ) const;
+//     void      SetIp(IpAddress aValue);
 
-    IpAddress GetOldIp( );
+//     IpAddress GetOldIp( );
 
-    void DoGetCli(MyOutStream* outP) override;
+//     void DoGetCli(MyOutStream* outP) override;
 
-    void DoGetCliHelp ( ) override { ocli.Print("%sip", Separator( )); }
+//     void DoGetCliHelp ( ) override { ocli.Print("%sip", Separator( )); }
 
-    void DoSetCli(WordReader* inP) override;
+//     void DoSetCli(WordReader* inP) override;
 
-    // void DoGetSnmp (SnmpVariable* outP) override { *outP << GetIp( ); }
+//     // void DoGetSnmp (SnmpVariable* outP) override { *outP << GetIp( ); }
 
-    // bool DoSetSnmp (SnmpVariable* varP) override
-    // {
-    //     SetIp(varP->AsIp( ));
-    //     return true;
-    // }
-};
+//     // bool DoSetSnmp (SnmpVariable* varP) override
+//     // {
+//     //     SetIp(varP->AsIp( ));
+//     //     return true;
+//     // }
+// };
 #if 0
 // TODO: redo methods to const where it is appropriate -- blocked by genius design of Value class...
 struct ValueIpV4orV6 : public ValueUnion {
@@ -939,40 +939,40 @@ struct ValueIpV4orV6 : public ValueUnion {
 #endif
 // ***************************************************************
 
-class ValueIpMask : public ValueIp
-{
-public:
-    bool IsValidMask( ) const;
-};
+// class ValueIpMask : public ValueIp
+// {
+// public:
+//     bool IsValidMask( ) const;
+// };
 
 // ***************************************************************
 
-class ValueIpAndMask : public ValueIp
-{
-public:
-    UINT32 GetMask( ) const;
-    UINT32 GetMaskAsPrefix( ) const;
+// class ValueIpAndMask : public ValueIp
+// {
+// public:
+//     UINT32 GetMask( ) const;
+//     UINT32 GetMaskAsPrefix( ) const;
 
-protected:
-    void DoGetCli(MyOutStream* outP) override;
-    void DoSetCli(WordReader* inP) override;
+// protected:
+//     void DoGetCli(MyOutStream* outP) override;
+//     void DoSetCli(WordReader* inP) override;
 
-    UINT32 _mask {0};
-};
+//     UINT32 _mask {0};
+// };
 
 // ***************************************************************
 
-class ValueIpAndUdpPort : public ValueIp
-{
-public:
-    uint32_t GetUdpPort ( ) const { return _udpPort; }
+// class ValueIpAndUdpPort : public ValueIp
+// {
+// public:
+//     uint32_t GetUdpPort ( ) const { return _udpPort; }
 
-protected:
-    void DoGetCli(MyOutStream* outP) override;
-    void DoSetCli(WordReader* inP) override;
+// protected:
+//     void DoGetCli(MyOutStream* outP) override;
+//     void DoSetCli(WordReader* inP) override;
 
-    uint32_t _udpPort {0};
-};
+//     uint32_t _udpPort {0};
+// };
 
 // ***************************************************************
 #if 0

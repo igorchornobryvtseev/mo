@@ -322,30 +322,31 @@ void CliContextTab::ReturnAutoComplete(DictAutoCompletion* dictionary, int multi
         _isDone = true;
         ocli.Clean( );
         _helper.PrintHelp( );
-    } else {
-        _isDone = true;
-        _status = RetStatus {E_RetStatus::Tab};
-
-        if ( dictionary == nullptr )
-            return;
-
-        AutoComplete ac(_tabPostfix.AsStr( ), MAX_CLI_INPUT_LEN + 1, _tabPrefix.AsStr( ), multi_step_separator);
-        UINT32       context;
-        for ( dictionary->___FirstEntry(&context); dictionary->___GetEntry(context).IsValid( ); dictionary->___NextEntry(&context) ) {
-            ac.Update(dictionary->___GetEntry(context)._nameP);
-        }
-
-        // make sure that the auto completion doesn't complete a random word
-        // from the dictionary:
-        if ( _tabPrefix.IsEmpty( ) && !ac.WasFullMatch( ) ) {
-            _tabPostfix.Clean( );
-            return;
-        }
-
-        if ( ac.WasMatch( ) )
-            _status = E_RetStatus::Ok;
-        _wasFullWordCompleted = ac.WasFullMatch( );
     }
+    // else {
+    //     _isDone = true;
+    //     _status = RetStatus {E_RetStatus::Tab};
+
+    //     if ( dictionary == nullptr )
+    //         return;
+
+    //     AutoComplete ac(_tabPostfix.AsStr( ), MAX_CLI_INPUT_LEN + 1, _tabPrefix.AsStr( ), multi_step_separator);
+    //     UINT32       context;
+    //     for ( dictionary->___FirstEntry(&context); dictionary->___GetEntry(context).IsValid( ); dictionary->___NextEntry(&context) ) {
+    //         ac.Update(dictionary->___GetEntry(context)._nameP);
+    //     }
+
+    //     // make sure that the auto completion doesn't complete a random word
+    //     // from the dictionary:
+    //     if ( _tabPrefix.IsEmpty( ) && !ac.WasFullMatch( ) ) {
+    //         _tabPostfix.Clean( );
+    //         return;
+    //     }
+
+    //     if ( ac.WasMatch( ) )
+    //         _status = E_RetStatus::Ok;
+    //     _wasFullWordCompleted = ac.WasFullMatch( );
+    // }
 }
 
 //////////////////////////////////////////////////////////
@@ -402,24 +403,24 @@ CliTable& CliTable::Cell(int src)
     return Cell(text.AsStr( ));
 }
 
-CliTable& CliTable::CellCounter64(UINT64 value)
-{
-    ValueCounter64 valueCounter(value);
-    return Cell(valueCounter);
-}
+// CliTable& CliTable::CellCounter64(UINT64 value)
+// {
+//     ValueCounter64 valueCounter(value);
+//     return Cell(valueCounter);
+// }
 
-CliTable& CliTable::CellCounterSigned64(UINT64 value)
-{
-    ValueCounter64 valueCounter(value);
-    valueCounter.AssignSignedPrintFormat(true);
-    return Cell(valueCounter);
-}
+// CliTable& CliTable::CellCounterSigned64(UINT64 value)
+// {
+//     ValueCounter64 valueCounter(value);
+//     valueCounter.AssignSignedPrintFormat(true);
+//     return Cell(valueCounter);
+// }
 
-CliTable& CliTable::CellDateAndTime(time_t value)
-{
-    ValueDateAndTime valueDateAndTime(value);
-    return Cell(valueDateAndTime);
-}
+// CliTable& CliTable::CellDateAndTime(time_t value)
+// {
+//     ValueDateAndTime valueDateAndTime(value);
+//     return Cell(valueDateAndTime);
+// }
 
 void CliTable::PrintRow( )
 {

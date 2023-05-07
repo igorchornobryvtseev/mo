@@ -469,120 +469,120 @@ UINT32 ValueLong::DoDataControl(T_DataControl dataControl)
 
 // ***************************************************************
 
-ValueIp::ValueIp( )
-{
-    SetIp(IpAddress( ));
-}
+// ValueIp::ValueIp( )
+// {
+//     SetIp(IpAddress( ));
+// }
 
-IpAddress ValueIp::GetIp( ) const
-{
-    return IpAddress(GetUint32( ));
-}
+// IpAddress ValueIp::GetIp( ) const
+// {
+//     return IpAddress(GetUint32( ));
+// }
 
-void ValueIp::SetIp(IpAddress aValue)
-{
-    SetUint32(aValue.AsUINT32( ));
-}
+// void ValueIp::SetIp(IpAddress aValue)
+// {
+//     SetUint32(aValue.AsUINT32( ));
+// }
 
-IpAddress ValueIp::GetOldIp( )
-{
-    return IpAddress(GetOldUint32( ));
-}
+// IpAddress ValueIp::GetOldIp( )
+// {
+//     return IpAddress(GetOldUint32( ));
+// }
 
-void ValueIp::DoGetCli(MyOutStream* outP)
-{
-    outP->Print("%s", GetIp( ).AsString( ).itsData);
-}
+// void ValueIp::DoGetCli(MyOutStream* outP)
+// {
+//     outP->Print("%s", GetIp( ).AsString( ).itsData);
+// }
 
-void ValueIp::DoSetCli(WordReader* inP)
-{
-    if ( inP->HandleAutoComplete( ) )
-        return;
+// void ValueIp::DoSetCli(WordReader* inP)
+// {
+//     if ( inP->HandleAutoComplete( ) )
+//         return;
 
-    if ( !inP->Read( ).IsOk( ) )
-        return;
+//     if ( !inP->Read( ).IsOk( ) )
+//         return;
 
-    if ( IpAddress::IsValidDottedString(inP->_dst.AsStr( )) ) {
-        SetIp(IpAddress(inP->_dst.AsStr( )));
-    } else
-        inP->SetStatus(RetStatus {E_RetStatus::Parsing});
-}
+//     if ( IpAddress::IsValidDottedString(inP->_dst.AsStr( )) ) {
+//         SetIp(IpAddress(inP->_dst.AsStr( )));
+//     } else
+//         inP->SetStatus(RetStatus {E_RetStatus::Parsing});
+// }
 
 // ***************************************************************
 
-bool ValueIpMask::IsValidMask( ) const
-{
-    // static UINT32 table[] = {0x80000000, 0xc0000000, 0xe0000000, 0xf0000000, 0xf8000000, 0xfc000000, 0xfe000000, 0xff000000, 0xff800000, 0xffc00000, 0xffe00000, 0xfff00000, 0xfff80000, 0xfffc0000,
-    //     0xfffe0000, 0xffff0000, 0xffff8000, 0xffffc000, 0xffffe000, 0xfffff000, 0xfffff800, 0xfffffc00, 0xfffffe00, 0xffffff00, 0xffffff80, 0xffffffc0, 0xffffffe0, 0xfffffff0, 0xfffffff8, 0xfffffffc,
-    //     0xfffffffe, 0xffffffff};
-    // for ( int i = 0; i < 32; i++ ) {
-    //     if ( GetUint32( ) == table[i] )
-    //         return true;
-    // }
-    return false;
-}
+// bool ValueIpMask::IsValidMask( ) const
+// {
+//     // static UINT32 table[] = {0x80000000, 0xc0000000, 0xe0000000, 0xf0000000, 0xf8000000, 0xfc000000, 0xfe000000, 0xff000000, 0xff800000, 0xffc00000, 0xffe00000, 0xfff00000, 0xfff80000, 0xfffc0000,
+//     //     0xfffe0000, 0xffff0000, 0xffff8000, 0xffffc000, 0xffffe000, 0xfffff000, 0xfffff800, 0xfffffc00, 0xfffffe00, 0xffffff00, 0xffffff80, 0xffffffc0, 0xffffffe0, 0xfffffff0, 0xfffffff8, 0xfffffffc,
+//     //     0xfffffffe, 0xffffffff};
+//     // for ( int i = 0; i < 32; i++ ) {
+//     //     if ( GetUint32( ) == table[i] )
+//     //         return true;
+//     // }
+//     return false;
+// }
 
-void ValueIpAndMask::DoSetCli(WordReader* inP)
-{
-    if ( inP->HandleAutoComplete( ) )
-        return;
+// void ValueIpAndMask::DoSetCli(WordReader* inP)
+// {
+//     if ( inP->HandleAutoComplete( ) )
+//         return;
 
-    if ( !inP->Read( ).IsOk( ) )
-        return;
+//     if ( !inP->Read( ).IsOk( ) )
+//         return;
 
-    int   i;
-    char* sourceP = inP->_dst.AsStr( );
-    for ( i = 0; (sourceP[i] != 0) && (sourceP[i] != '/') && (i < 20); i++ )
-        ;
-    if ( sourceP[i] != '/' ) {
-        inP->SetStatus(E_RetStatus::Parsing);
-        return;
-    }
+//     int   i;
+//     char* sourceP = inP->_dst.AsStr( );
+//     for ( i = 0; (sourceP[i] != 0) && (sourceP[i] != '/') && (i < 20); i++ )
+//         ;
+//     if ( sourceP[i] != '/' ) {
+//         inP->SetStatus(E_RetStatus::Parsing);
+//         return;
+//     }
 
-    char ipBuf[20 + 1];
-    memcpy(ipBuf, sourceP, i);
-    ipBuf[i] = 0;
+//     char ipBuf[20 + 1];
+//     memcpy(ipBuf, sourceP, i);
+//     ipBuf[i] = 0;
 
-    ValueIp   valueIp;
-    RetStatus status = valueIp.SetString(ipBuf);
-    if ( !status.ok( ) ) {
-        inP->SetStatus(status);
-        return;
-    }
+//     ValueIp   valueIp;
+//     RetStatus status = valueIp.SetString(ipBuf);
+//     if ( !status.ok( ) ) {
+//         inP->SetStatus(status);
+//         return;
+//     }
 
-    i++;
-    ValueLong valueWidth;
-    status = valueWidth.SetString(sourceP + i);
-    if ( !status.ok( ) ) {
-        inP->SetStatus(status);
-        return;
-    }
-    if ( uint width = valueWidth.GetUint32( ); width == 0 ) {
-        _mask = 0;
-    } else if ( width < 32 ) {
-        _mask = std::numeric_limits<uint32_t>::max( ) << (32 - width);
-    } else {
-        inP->SetStatus(E_RetStatus::Range);
-        return;
-    }
+//     i++;
+//     ValueLong valueWidth;
+//     status = valueWidth.SetString(sourceP + i);
+//     if ( !status.ok( ) ) {
+//         inP->SetStatus(status);
+//         return;
+//     }
+//     if ( uint width = valueWidth.GetUint32( ); width == 0 ) {
+//         _mask = 0;
+//     } else if ( width < 32 ) {
+//         _mask = std::numeric_limits<uint32_t>::max( ) << (32 - width);
+//     } else {
+//         inP->SetStatus(E_RetStatus::Range);
+//         return;
+//     }
 
-    SetIp(valueIp.GetIp( ));
-}
+//     SetIp(valueIp.GetIp( ));
+// }
 
-void ValueIpAndMask::DoGetCli(MyOutStream* outP)
-{
-    outP->Print("%s/%d", GetIp( ).AsString( ).itsData, GetMaskAsPrefix( ));
-}
+// void ValueIpAndMask::DoGetCli(MyOutStream* outP)
+// {
+//     outP->Print("%s/%d", GetIp( ).AsString( ).itsData, GetMaskAsPrefix( ));
+// }
 
-UINT32 ValueIpAndMask::GetMask( ) const
-{
-    return _mask;
-}
+// UINT32 ValueIpAndMask::GetMask( ) const
+// {
+//     return _mask;
+// }
 
-UINT32 ValueIpAndMask::GetMaskAsPrefix( ) const
-{
-    return IpAddress(_mask).Mask2PrefixSize( );
-}
+// UINT32 ValueIpAndMask::GetMaskAsPrefix( ) const
+// {
+//     return IpAddress(_mask).Mask2PrefixSize( );
+// }
 
 // ***************************************************************
 
