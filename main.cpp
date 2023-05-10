@@ -1,6 +1,19 @@
 #include "igorc_common.h"
 #include "Mo.h"
 
+void log(const char* fname, int fline, const char* format, ...)
+{
+    printf("%s:%d ", fname, fline);
+
+    va_list argptr;
+    va_start(argptr, format);
+    vprintf(format, argptr);
+    va_end(argptr);
+
+    if (format[strlen(format) - 1] != '\n')
+        printf("\n");
+}
+
 long mygettime ( )
 {
     timespec tp;
@@ -17,6 +30,9 @@ void AllDownloadConfig (bool isDefaultDatabase)
 
 int main()
 {
-	printf("-----\n");
-	return 0;
+    MoPipeMode::CreateAll( );
+
+
+    printf("-----\n");
+    return 0;
 }

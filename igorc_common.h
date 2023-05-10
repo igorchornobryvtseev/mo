@@ -3,7 +3,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h> // legacy 
+#include <stdarg.h>
 #include <vector>
+
+void log(const char* fname, int fline, const char* format, ...);
+#define LOG(...)    log(__PRETTY_FUNCTION__, __LINE__, __VA_ARGS__);
 
 typedef int  UINT8;
 typedef int UINT16;

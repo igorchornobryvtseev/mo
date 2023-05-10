@@ -37,7 +37,7 @@ struct ValuePipeModePortList : public ValueListOfDictionaryT<ValuePipeModePort, 
 
 void MoPipeMode::Create(EthNum ethNum)
 {
-    printf("entry ethNum=%d\n", ethNum.id);
+    LOG("entry ethNum=%d\n", ethNum.id);
 
     MoPipeMode* moP = BuildNewT<MoPipeMode>( );
     if ( moP == nullptr )
@@ -50,7 +50,7 @@ void MoPipeMode::Create(EthNum ethNum)
 
 void MoPipeMode::CreateAll( )
 {
-    printf("entry\n");
+    LOG("entry\n");
 
     // for ( auto iter = BeginEthNumPhy( ); iter->IsValid( ); iter++ ) {
     //     Create(*iter);
@@ -66,6 +66,8 @@ void MoPipeMode::CreateAll( )
 
 void MoPipeMode::DownloadConfig( )
 {
+    LOG("entry\n");
+
     ValueMo valueMo(MO_PIPE_MODE);
     for ( valueMo.SetFirst( ); valueMo.IsValid( ); valueMo.SetNext( ) ) {
         MoPipeMode* moP = (MoPipeMode*)valueMo.MoP( );
@@ -120,7 +122,7 @@ RetStatus MoPipeMode::CheckConstraints()
 
 RetStatus MoPipeMode::DoPerform(ActionType performType, void* dataP)
 {
-    printf("entry performType:%d", performType);
+    LOG("entry performType:%s (%d)\n", to_string(performType), performType);
 
     // switch (performType) {
     // case GET_MO_NUMBER:
@@ -151,6 +153,8 @@ RetStatus MoPipeMode::DoPerform(ActionType performType, void* dataP)
 
 void MoPipeMode::DoHandleShow(ActionType cmdType)
 {
+    LOG("entry\n");
+
     CliReaderIdList<ValuePipeModePortList> id_ports(ATTR_ETH_PORT);
     CliModifierShow modifier(Type( ));
 
@@ -166,6 +170,8 @@ void MoPipeMode::DoHandleShow(ActionType cmdType)
 
 void MoPipeMode::DoHandleSet(ActionType cmdType)
 {
+    LOG("entry\n");
+
     CliReaderId<ValuePipeModePort> id_port(ATTR_ETH_PORT);
     AttrListSet attrList(Type( ));
     attrList.AddSettable( );
@@ -179,7 +185,7 @@ void MoPipeMode::DoHandleSet(ActionType cmdType)
 
     EthNum ethNum  = id_port._valueVal.GetEthNum();
     UINT32 portVal = id_port._valueVal.GetUint32( );
-    printf("ethNum:%d portVal:%d\n", ethNum.id, portVal);
+    LOG("ethNum:%d portVal:%d\n", ethNum.id, portVal);
 
     MoPipeMode* pmP = FindMoT<MoPipeMode>(MoId(portVal));
     if ( pmP == nullptr ) {
