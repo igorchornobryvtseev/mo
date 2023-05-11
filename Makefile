@@ -1,8 +1,4 @@
-# a: main.cpp
-# 	g++ -o a.out main.cpp
-
-# a: main.cpp MoPipeMode.cpp Database.cpp Mo.cpp CliMo.cpp AdapterCli.cpp CliContext.cpp MyString.cpp BitMap.cpp Value.cpp MoEthernet.cpp PlaceBuffer.cpp
-# 	g++ -std=c++17 -Wfatal-errors -o a.out main.cpp MoPipeMode.cpp Database.cpp Mo.cpp CliMo.cpp AdapterCli.cpp CliContext.cpp MyString.cpp BitMap.cpp Value.cpp MoEthernet.cpp PlaceBuffer.cpp
+INCDIR = inc    # include dir
 
 CPPLIST = main.cpp \
         AdapterCli.cpp \
@@ -18,4 +14,4 @@ CPPLIST = main.cpp \
         Value.cpp
 
 all: $(CPPLIST)
-	g++ -g -std=c++17 -Wfatal-errors -o mo.bin $(CPPLIST) && echo "mo.bin is created"
+	g++ -g -std=c++17 -Wfatal-errors -o mo.bin -I $(INCDIR) $(CPPLIST) && echo "mo.bin is created"
