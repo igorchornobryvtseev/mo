@@ -17,5 +17,5 @@ CPPLIST = main.cpp \
         PlaceBuffer.cpp \
         Value.cpp
 
-a: $(CPPLIST)
-	g++ -std=c++17 -Wfatal-errors -o a.out $(CPPLIST)
+all: $(CPPLIST)
+	g++ -g -std=c++17 -Wfatal-errors -o mo.bin $(CPPLIST) && echo "mo.bin is created"

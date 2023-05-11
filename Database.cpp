@@ -132,6 +132,10 @@ void TransactionEnd (TransactionEndType endType)
 
                 if ( actionStatus != ACTION_NONE ) {
                     moP->DoPostConfig(actionStatus);
+
+                    char*    moName = moP->TypeName();
+                    T_MoType moType = moP->Type( );
+                    LOG("igorc moType:%d moName:%s", moType, moName);
                     touchedTypes.Set(moP->Type( ), true);
                 }
             }
@@ -171,8 +175,15 @@ void TransactionEnd (TransactionEndType endType)
     ValueMo::_DeleteMo(ACTION_DELETED);
 
     for ( auto it = touchedTypes.Begin( ); it.IsValid( ); it++ ) {
-        SampleMo((T_MoType)(*it))->DoSamplePostConfig( );
+        T_MoType moType = (T_MoType)(*it);
+        LOG("igorc moType:%d", moType);
+
+        Mo* moP =  SampleMo( moType);
+        LOG("moP=%p", moP);
+
+//        SampleMo((T_MoType)(*it))->DoSamplePostConfig( );
     }
+    return;
 
     // Transaction Cleanup
     for ( UINT16 index = 0; index < MAX_NUM_MOS; index++ ) {

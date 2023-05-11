@@ -3,7 +3,7 @@
 
 void log(const char* fname, int fline, const char* format, ...)
 {
-    printf("%s:%d ", fname, fline);
+    printf("[%s:%d] ", fname, fline);
 
     va_list argptr;
     va_start(argptr, format);
@@ -28,9 +28,20 @@ void AllDownloadConfig (bool isDefaultDatabase)
     MoPipeMode::DownloadConfig();
 }
 
+void AdapterCli(CliContext& contextP);
+
 int main()
 {
     MoPipeMode::CreateAll( );
+
+    // main_ca.cpp: case CadMsgType::CLI_REQUEST_ENTER:
+
+    // ocli.AttachBuffer(msgP->replyPrintBuffer, CLI_REPLY_PRINT_BUFFER);
+
+    // regular execution
+    char requestLine[32] = "show pipe-mode";
+    CliContextExe context(requestLine);
+    AdapterCli(context);
 
 
     printf("-----\n");
