@@ -43,8 +43,8 @@ void MoPipeMode::Create(EthNum ethNum)
     if ( moP == nullptr )
         return;
 
-    // moP->ethPort.SetEthNum(ethNum);
-    // moP->adminState.SetEnum(E_AdminState::Disable);
+    moP->ethPort.SetEthNum(ethNum);
+    moP->adminState.SetEnum(E_AdminState::Disable);
     Db( )->AddMo(moP);
 }
 
@@ -93,6 +93,7 @@ void MoPipeMode::DownloadConfig( )
 
 RetStatus MoPipeMode::CheckConstraints()
 {
+    LOG("entry\n");
     // EthNum       ethNum = ethPort.GetEthNum( );
     // E_AdminState state  = adminState.GetEnum<E_AdminState>( );
 
@@ -124,29 +125,29 @@ RetStatus MoPipeMode::DoPerform(ActionType performType, void* dataP)
 {
     LOG("entry performType:%s (%d)\n", to_string(performType), performType);
 
-    // switch (performType) {
-    // case GET_MO_NUMBER:
-    //     //fTRACE(true, "GET_MO_NUMBER:{}", ethPort.GetUint32( ));
-    //     *((MoId*)dataP) = MoId(ethPort.GetUint32( ));
-    //     break;
-    // case PRINT_FULL_NAME:
-    //     *((MyOutStream*)dataP) << TypeName( ) << " " << ethPort;
-    //     break;
-    // case GET_MO_TYPE:
-    //     *((T_MoType*)dataP) = MO_PIPE_MODE;
-    //     break;
-    // case PRINT_TYPE_NAME:
-    //     *((MyOutStream*)dataP) << "pipe-mode";
-    //     break;
-    // case REGISTER_STATIC:
-    //     RegisterAttr(ATTR_ETH_PORT, NO_CLI, &ethPort, "eth");
-    //     RegisterAttr(ATTR_ADMIN_STATE, CLI_INFO_CONF, &adminState, "admin");
-    //     break;
-    // case CONFIRM_CHANGE:
-    //     return CheckConstraints();
-    // default:
-    //     break;
-    // }
+    switch (performType) {
+    case GET_MO_NUMBER:
+        //fTRACE(true, "GET_MO_NUMBER:{}", ethPort.GetUint32( ));
+        *((MoId*)dataP) = MoId(ethPort.GetUint32( ));
+        break;
+    case PRINT_FULL_NAME:
+        *((MyOutStream*)dataP) << TypeName( ) << " " << ethPort;
+        break;
+    case GET_MO_TYPE:
+        *((T_MoType*)dataP) = MO_PIPE_MODE;
+        break;
+    case PRINT_TYPE_NAME:
+        *((MyOutStream*)dataP) << "pipe-mode";
+        break;
+    case REGISTER_STATIC:
+        RegisterAttr(ATTR_ETH_PORT, NO_CLI, &ethPort, "eth");
+        RegisterAttr(ATTR_ADMIN_STATE, CLI_INFO_CONF, &adminState, "admin");
+        break;
+    case CONFIRM_CHANGE:
+        return CheckConstraints();
+    default:
+        break;
+    }
 
     return RetStatus {E_RetStatus::Ok};
 }

@@ -133,9 +133,8 @@ void TransactionEnd (TransactionEndType endType)
                 if ( actionStatus != ACTION_NONE ) {
                     moP->DoPostConfig(actionStatus);
 
-                    char*    moName = moP->TypeName();
-                    T_MoType moType = moP->Type( );
-                    LOG("igorc moType:%d moName:%s", moType, moName);
+                    T_MoType moType   = moP->Type( );
+                    LOG("index:%d moType:%d", index, moType);
                     touchedTypes.Set(moP->Type( ), true);
                 }
             }
@@ -181,7 +180,7 @@ void TransactionEnd (TransactionEndType endType)
         Mo* moP =  SampleMo( moType);
         LOG("moP=%p", moP);
 
-//        SampleMo((T_MoType)(*it))->DoSamplePostConfig( );
+        SampleMo((T_MoType)(*it))->DoSamplePostConfig( );
     }
     return;
 
@@ -289,6 +288,7 @@ void ValueMo::_AddMo(Mo* newMoP)
 
     T_MoType moType   = newMoP->Type( );
     MoId     moNumber = newMoP->GetNumber( );
+    LOG("moType:%d moNumber:%d", moType, moNumber);
 
     int mid, low = 0, high = ValueMo::_numOfSorted - 1;
     while ( low <= high ) {

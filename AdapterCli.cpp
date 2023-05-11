@@ -59,8 +59,7 @@ void LogUserActivity (std::string_view text)
     // std::string tmp = fmt::format("User: {} : {}", Client(GetClientId( ))->_userInfo._userName, text);
 
 //#ifdef X86_TARGET
-    printf("%s\n", __func__);
-    //printf("%s\n", text.c_str());
+    LOG("'%s'", text.data());
 // #else
 //     syslog(LOG_LOCAL5, "%s", tmp.c_str( ));
 // #endif
@@ -157,7 +156,7 @@ struct CliVars {
 
     char* Find (const char* nameP)
     {
-        printf("return NULL\n");
+        LOG("return NULL");
         // UINT32 i;
         // for ( i = 0; i < _numOfLocals; i++ ) {
         //     if ( _locals[i]._name == nameP )
@@ -2247,7 +2246,7 @@ void AdapterCli (CliContext& context)
 {
     cliP = &context;
 
-    printf("processing cli command %s\n", context._originalLine.AsStr());
+    LOG("processing cli command %s\n", context._originalLine.AsStr());
     // if ( special_character_exist(context._originalLine.view( ), E_ProhibitedCharactersSet::Cli) ) {
     //     cliP->ReturnErrorAndPrint(RetStatus {"Input contains not allowed symbols. Operation failed."});
     //     PrintErrorToFile(context);
@@ -2277,7 +2276,7 @@ void AdapterCli (CliContext& context)
             char* cliVarValue = cliVars.Find(name.AsStr( ) + 1);  // do not use starting $
 
             if ( cliVarValue == nullptr ) {
-                printf("Cannot find '%s'. Operation failed.\n", name.AsStr());
+                LOG("Cannot find '%s'. Operation failed.\n", name.AsStr());
                 // cliP->ReturnErrorAndPrint(RetStatus {"Cannot find {}. Operation failed.", name});
                 PrintErrorToFile(context);
                 return;

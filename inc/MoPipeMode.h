@@ -17,7 +17,7 @@ public:
     void      DoHandleSet(ActionType cmdType) override;
 
 
-    //ValueEthernetPort ethPort; // TODO: consider change type to ValuePipeModePortList
+    ValueEthernetPort ethPort;
 
     DICTIONARY_2(PipeModeStatus, E_AdminState::Enable, "enabled", E_AdminState::Disable, "disabled");
     ValueDictT<PipeModeStatus, static_cast<uint32_t>(E_AdminState::Disable)> adminState;

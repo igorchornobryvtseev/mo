@@ -9,7 +9,7 @@ void* operator new (size_t objSize, PlaceBuffer* placeP)
 {
     void* ptr = placeP->Alloc(objSize);
     if ( ptr == nullptr ) {
-        printf("fail\n");
+        LOG("fail\n");
         // std::string tmp = fmt::format("ERROR-NO-PLACE in operator new, text:\n[{}]\n", placeP->_textP);
         // fLOG_EX_ERR(false, "{}", tmp);
         // TTYOUT("!!!!!! {}", tmp);
