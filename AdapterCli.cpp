@@ -1663,7 +1663,9 @@ public:
             Mo* sampleP         = SampleMo(moType);
             Mo::_cmdType        = CMD_SHOW;
             Mo::_numOfReadersId = 0;
+            LOG("CMD_SHOW before");
             sampleP->DoHandleShow(ACTION_CLI_CMD);
+            LOG("CMD_SHOW after");
         }
         // else if ( valueMoType == "loginsession" ) {
         //     MyStringT<64> tmp;
@@ -2257,7 +2259,7 @@ void AdapterCli (CliContext& context)
     cliP->_helper.HelpAssignRoot( );
 
     // if ( (GetDebugFlag(DEBUG_FLAG_CONFIGURING) || GetDebugFlag(DEBUG_FLAG_CONFIGURING_DETAILS)) && context.IsExeMode( ) )
-        ocli << "\n***************** START DUMP ******************\n";
+    //    ocli << "\n***************** START DUMP ******************\n";
 
     // detect and substitute cli variables
     if ( context.IsExeMode( ) ) {

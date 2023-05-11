@@ -35,7 +35,7 @@ struct ValuePipeModePortList : public ValueListOfDictionaryT<ValuePipeModePort, 
 //     }
 // }
 
-void MoPipeMode::Create(EthNum ethNum)
+void MoPipeMode::Create(EthNum ethNum, E_AdminState admState)
 {
     LOG("entry ethNum=%d\n", ethNum.id);
 
@@ -44,7 +44,7 @@ void MoPipeMode::Create(EthNum ethNum)
         return;
 
     moP->ethPort.SetEthNum(ethNum);
-    moP->adminState.SetEnum(E_AdminState::Disable);
+    moP->adminState.SetEnum(admState);
     Db( )->AddMo(moP);
 }
 
@@ -59,9 +59,9 @@ void MoPipeMode::CreateAll( )
     EthNum eth0 = EthNum {static_cast<T_EthernetNum>(1)};
     EthNum eth1 = EthNum {static_cast<T_EthernetNum>(2)};
     EthNum eth2 = EthNum {static_cast<T_EthernetNum>(3)};
-    Create(eth0);
-    Create(eth1);
-    Create(eth2);
+    Create(eth0, E_AdminState::Disable);
+    Create(eth1, E_AdminState::Enable);
+    Create(eth2, E_AdminState::Disable);
 }
 
 void MoPipeMode::DownloadConfig( )
@@ -154,7 +154,7 @@ RetStatus MoPipeMode::DoPerform(ActionType performType, void* dataP)
 
 void MoPipeMode::DoHandleShow(ActionType cmdType)
 {
-    LOG("entry\n");
+    LOG("entry");
 
     CliReaderIdList<ValuePipeModePortList> id_ports(ATTR_ETH_PORT);
     CliModifierShow modifier(Type( ));
@@ -167,6 +167,7 @@ void MoPipeMode::DoHandleShow(ActionType cmdType)
         return;
 
     Cli_PrintStandardShow(&modifier, nullptr);
+    LOG("exit");
 }
 
 void MoPipeMode::DoHandleSet(ActionType cmdType)

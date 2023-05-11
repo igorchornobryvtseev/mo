@@ -23,6 +23,6 @@ public:
     ValueDictT<PipeModeStatus, static_cast<uint32_t>(E_AdminState::Disable)> adminState;
 
 private:
-    static void Create(EthNum ethNum);
+    static void Create(EthNum ethNum, E_AdminState admState);
     RetStatus CheckConstraints();
 };

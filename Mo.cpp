@@ -805,6 +805,7 @@ void Mo::Cli_PrintStandardHelpSet(AttrListSet* attrListP)
 
 void Mo::Cli_PrintStandardShow(CliModifierShow* modifierP, AttrArray* infoTableAttrsP)
 {
+    LOG("entry");
     // if ( modifierP->IsStats( ) || modifierP->IsStatsSummary( ) )
     //     Cli_PrintStandardShowStatistics(modifierP);
     // else 
@@ -812,10 +813,12 @@ void Mo::Cli_PrintStandardShow(CliModifierShow* modifierP, AttrArray* infoTableA
         Cli_PrintStandardShowInfoAsTable(infoTableAttrsP);
     else
         Cli_PrintStandardShowInfoAsList(modifierP);
+    LOG("exit");
 }
 
 void Mo::Cli_PrintStandardShowInfoAsList(CliModifierShow* modifierP)
 {
+    LOG("entry");
     ValueMoMatchCli valueMo(Type( ));
 
     for ( valueMo.SetFirst( ); valueMo.IsValid( ); valueMo.SetNext( ) ) {
@@ -831,10 +834,12 @@ void Mo::Cli_PrintStandardShowInfoAsList(CliModifierShow* modifierP)
             }
         }
     }
+    LOG("exit");
 }
 
 void Mo::Cli_PrintStandardShowInfoAsTable(AttrArray* infoTableAttrsP)
 {
+    LOG("entry");
     ocli << FOCUS(SampleMo(Type( ))) << "\n";
     for ( UINT32 i = 0; i < infoTableAttrsP->_numOf; i++ ) {
         if ( infoTableAttrsP->_array[i]._length == 0 ) {
@@ -871,6 +876,7 @@ void Mo::Cli_PrintStandardShowInfoAsTable(AttrArray* infoTableAttrsP)
         }
         ocli << "\n";
     }
+    LOG("exit");
 }
 
 // void Mo::Cli_PrintStandardShowStatistics(CliModifierShow* modifierP)

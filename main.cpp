@@ -43,6 +43,8 @@ int main()
     char requestLine[32] = "show pipe-mode";
     CliContextExe context(requestLine);
     AdapterCli(context);
+    printf("***********************\n");
+    LOG("RESP='%s'", ocli.AsStr());
 
 
     printf("-----\n");
