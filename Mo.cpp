@@ -67,6 +67,7 @@
 // #include "MoPcpWriteProfile.h"
 // #include "MoPfc.h"
 #include "MoPipeMode.h"
+#include "MoSyncE.h"
 // #include "MoPse.h"
 // #include "MoQosCommon.h"
 // #include "MoRfDebug.h"
@@ -248,6 +249,7 @@ Mo* Mo::BuildNew(T_MoType moType, void* extraP)
         // case MO_PSE: return Pse( )->IsSupported( ) ? (new (place) MoPse( )) : nullptr;
         // case MO_LAG: return new (place) MoLag( );
         case MO_PIPE_MODE: return new (place) MoPipeMode( );
+        case MO_SYNCE: return new (place) MoSyncE( );
         default: return nullptr;
     };
 }

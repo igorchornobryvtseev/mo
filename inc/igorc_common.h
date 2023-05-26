@@ -54,6 +54,7 @@ struct EthNum {
         case 0: return "0";
         case 1: return "1";
         case 2: return "2";
+        case 3: return "3";
         }
         return "xx";
     };
@@ -101,13 +102,15 @@ struct EthNum {
 #include "IpAddress.h"
 #include "MoEthernet.h"
 #include "Mo.h"
-#include "MoPipeMode.h"
 #include "MoType.h"
 #include "MyArray.h"
 #include "MyString.h"
 #include "PlaceBuffer.h"
 #include "RetStatus.h"
 #include "Value.h"
+
+#include "MoPipeMode.h"
+#include "MoSyncE.h"
 
 template< class C >
 size_t std_size( const C& c )// -> decltype(c.size());

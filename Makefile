@@ -9,6 +9,7 @@ CPPLIST = main.cpp \
         Mo.cpp \
         MoEthernet.cpp \
         MoPipeMode.cpp \
+        MoSyncE.cpp \
         MyString.cpp \
         PlaceBuffer.cpp \
         Value.cpp

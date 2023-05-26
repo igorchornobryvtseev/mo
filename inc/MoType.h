@@ -567,6 +567,7 @@ enum T_MoType {
     MO_BRIDGE_PORT,
     MO_BRIDGE_RULE,
     MO_PIPE_MODE,
+    MO_SYNCE,
 
     // all interfaces should be till here
 

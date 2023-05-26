@@ -34,13 +34,15 @@ int main()
 {
     InitSampleMo( );
     MoPipeMode::CreateAll( );
+    MoSyncE::CreateAll( );
 
     // main_ca.cpp: case CadMsgType::CLI_REQUEST_ENTER:
 
     // ocli.AttachBuffer(msgP->replyPrintBuffer, CLI_REPLY_PRINT_BUFFER);
 
     // regular execution
-    char requestLine[32] = "show pipe-mode";
+    //char requestLine[32] = "show pipe-mode";
+    char requestLine[32] = "show synce";
     CliContextExe context(requestLine);
     AdapterCli(context);
     printf("***********************\n");
