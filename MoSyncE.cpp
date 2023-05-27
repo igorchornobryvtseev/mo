@@ -50,7 +50,7 @@ void MoSyncE::CreateAll( )
     LOG("entry");
 
     Create(EthNum(1)); // eth0
-    Create(EthNum(2)); // eth2
+    //Create(EthNum(2)); // eth2
 }
 
 void MoSyncE::DownloadConfig( )
@@ -104,11 +104,17 @@ RetStatus MoSyncE::DoPerform(ActionType performType, void* dataP)
             // fTRACE(true, "GET_MO_NUMBER:{}", ethPort.GetUint32( ));
             *((MoId*)dataP) = MoId(ethPort.GetUint32( ));
             break;
-        case PRINT_FULL_NAME: *((MyOutStream*)dataP) << TypeName( ) << " " << ethPort; break;
-        case GET_MO_TYPE: *((T_MoType*)dataP) = MO_SYNCE; break;
-        case PRINT_TYPE_NAME: *((MyOutStream*)dataP) << "synce"; break;
+        case PRINT_FULL_NAME:
+            *((MyOutStream*)dataP) << TypeName( ) << " " << ethPort;
+            break;
+        case GET_MO_TYPE:
+            *((T_MoType*)dataP) = MO_SYNCE;
+            break;
+        case PRINT_TYPE_NAME:
+            *((MyOutStream*)dataP) << "synce";
+            break;
         case REGISTER_STATIC:
-            RegisterAttr(ATTR_ETH_PORT, NO_CLI, &ethPort, "eth");
+            RegisterAttr(ATTR_ETH_PORT, CLI_INFO_CONF, &ethPort, "source");
             RegisterAttr(ATTR_ADMIN_STATE, CLI_INFO_CONF, &adminState, "admin");
             break;
         case CONFIRM_CHANGE: return CheckConstraints( );
@@ -118,6 +124,9 @@ RetStatus MoSyncE::DoPerform(ActionType performType, void* dataP)
     return RetStatus {E_RetStatus::Ok};
 }
 
+// EH-8010FX-AES-L>show synce
+// synce admin                     : down
+// synce source                    : eth2|eth0
 void MoSyncE::DoHandleShow(ActionType cmdType)
 {
     LOG("entry");

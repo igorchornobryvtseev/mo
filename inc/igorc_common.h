@@ -51,10 +51,10 @@ struct EthNum {
 
     const char*   AsName( ) const {
         switch (id) {
-        case 0: return "0";
-        case 1: return "1";
-        case 2: return "2";
-        case 3: return "3";
+        case 0: return "eth0";
+        case 1: return "eth1";
+        case 2: return "eth2";
+        case 3: return "eth3";
         }
         return "xx";
     };

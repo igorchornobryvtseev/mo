@@ -42,6 +42,7 @@ int main()
 
     // regular execution
     //char requestLine[32] = "show pipe-mode";
+    //char requestLine[64] = "set pipe-mode eth1 admin enabled";
     char requestLine[32] = "show synce";
     CliContextExe context(requestLine);
     AdapterCli(context);
