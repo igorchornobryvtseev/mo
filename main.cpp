@@ -33,8 +33,8 @@ void AdapterCli(CliContext& contextP);
 int main()
 {
     InitSampleMo( );
-    MoPipeMode::CreateAll( );
-    MoSyncE::CreateAll( );
+    //MoPipeMode::CreateAll( );
+    MoSyncE::Create( );
 
     // main_ca.cpp: case CadMsgType::CLI_REQUEST_ENTER:
 

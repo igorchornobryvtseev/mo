@@ -248,7 +248,8 @@ Mo* Mo::BuildNew(T_MoType moType, void* extraP)
         // case MO_AAA: return new (place) MoAaa( );
         // case MO_PSE: return Pse( )->IsSupported( ) ? (new (place) MoPse( )) : nullptr;
         // case MO_LAG: return new (place) MoLag( );
-        case MO_PIPE_MODE: return new (place) MoPipeMode( );
+
+//        case MO_PIPE_MODE: return new (place) MoPipeMode( );
         case MO_SYNCE: return new (place) MoSyncE( );
         default: return nullptr;
     };
@@ -824,12 +825,14 @@ void Mo::Cli_PrintStandardShowInfoAsList(CliModifierShow* modifierP)
     ValueMoMatchCli valueMo(Type( ));
 
     for ( valueMo.SetFirst( ); valueMo.IsValid( ); valueMo.SetNext( ) ) {
+        LOG("loop-1");
         Mo* moP = valueMo.MoP( );
         moP->UpdateDynamic( );
         ocli << FOCUS(moP);
         ocli << "\n";
 
         for ( UINT32 i = 0; i < modifierP->_info._numOf; i++ ) {
+            LOG("loop-2");
             AttrId attrId = modifierP->_info._array[i]._attrId;
             if ( modifierP->IsInfo( ) || (modifierP->GetAttr( ) == attrId) ) {
                 ocli << moP << " " << NAME(attrId, CliNameColumnLen) << ocli.GetNameValSeparator( ) << VAL(attrId) << "\n";

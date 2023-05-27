@@ -14,5 +14,8 @@ CPPLIST = main.cpp \
         PlaceBuffer.cpp \
         Value.cpp
 
+OBJLIST=$(CPPLIST:%.cpp=%.o)
+OBJLIST=$(CPPLIST:.cpp=.o)
+
 all: $(CPPLIST)
 	g++ -g -std=c++17 -Wfatal-errors -o mo.bin -I $(INCDIR) $(CPPLIST) && echo "mo.bin is created"

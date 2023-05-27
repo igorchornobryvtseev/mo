@@ -10,8 +10,9 @@ constexpr static bool localDebug = true;
 struct ValueSyncEPort : public ValueEthernetPort {
     bool DoIsMatch ( ) override  // this condition should be in sync with condition in CreateAll loop
     {
+        LOG("entry");
         EthNum ethNum = GetEthNum( );
-        if (ethNum == EthNum(1) || ethNum == EthNum(2))
+        if (ethNum == EthNum(0) || ethNum == EthNum(2))
             return true;
         return false;
     }
@@ -32,25 +33,18 @@ void MoSyncE::BuildScript(MyOutStream* dstP)
     });
 }
 
-void MoSyncE::Create(EthNum ethNum)
+void MoSyncE::Create()
 {
-    LOG("entry ethNum=%d", ethNum.id);
+    LOG("entry ethNum");
 
     MoSyncE* moP = BuildNewT<MoSyncE>( );
     if ( moP == nullptr )
         return;
 
-    moP->ethPort.SetEthNum(ethNum);
+    moP->ethPort.SetEthNum(EthNum(0));
     moP->adminState.SetEnum(E_AdminState::Disable);
     Db( )->AddMo(moP);
-}
-
-void MoSyncE::CreateAll( )
-{
-    LOG("entry");
-
-    Create(EthNum(1)); // eth0
-    //Create(EthNum(2)); // eth2
+    LOG("exit");
 }
 
 void MoSyncE::DownloadConfig( )
@@ -102,10 +96,10 @@ RetStatus MoSyncE::DoPerform(ActionType performType, void* dataP)
     switch ( performType ) {
         case GET_MO_NUMBER:
             // fTRACE(true, "GET_MO_NUMBER:{}", ethPort.GetUint32( ));
-            *((MoId*)dataP) = MoId(ethPort.GetUint32( ));
+            *((MoId*)dataP) = MoId(1);
             break;
         case PRINT_FULL_NAME:
-            *((MyOutStream*)dataP) << TypeName( ) << " " << ethPort;
+            *((MyOutStream*)dataP) << TypeName( );
             break;
         case GET_MO_TYPE:
             *((T_MoType*)dataP) = MO_SYNCE;
@@ -121,12 +115,14 @@ RetStatus MoSyncE::DoPerform(ActionType performType, void* dataP)
         default: break;
     }
 
+    LOG("exit");
     return RetStatus {E_RetStatus::Ok};
 }
 
 // EH-8010FX-AES-L>show synce
 // synce admin                     : down
 // synce source                    : eth2|eth0
+#if 0
 void MoSyncE::DoHandleShow(ActionType cmdType)
 {
     LOG("entry");
@@ -141,7 +137,25 @@ void MoSyncE::DoHandleShow(ActionType cmdType)
         return;
 
     Cli_PrintStandardShow(&modifier, nullptr);
+    LOG("exit");
 }
+#else
+void MoSyncE::DoHandleShow(ActionType cmdType)
+{
+    LOG("entry");
+    CliModifierShow modifier(Type( ));
+
+    if ( cmdType == ACTION_CLI_HELP )
+        return Cli_PrintStandardHelpShow(&modifier);
+
+    *cliP >> modifier >> END( );
+    if ( cliP->CheckExit(true) )
+        return;
+
+    Cli_PrintStandardShow(&modifier, nullptr);
+    LOG("exit");
+}
+#endif
 
 void MoSyncE::DoHandleSet(ActionType cmdType)
 {
@@ -168,4 +182,5 @@ void MoSyncE::DoHandleSet(ActionType cmdType)
     }
 
     std::ignore = CopySampleTo(pmP, &attrList);  // DoPerform(CONFIRM_CHANGE, nullptr) is called inside, so it's ok get error here
+    LOG("exit");
 }

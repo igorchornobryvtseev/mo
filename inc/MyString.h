@@ -38,7 +38,7 @@ public:
 
     void SetNameValSeparator (char* separatorP) { _nameValSeparatorP = separatorP; }
 
-    char* GetNameValSeparator ( ) { return _nameValSeparatorP; }
+    const char* GetNameValSeparator ( ) { return _nameValSeparatorP; }
 
     MY_STRING_CONSTEXPR MyOutStream& assign(std::string_view sv);
     MY_STRING_CONSTEXPR MyOutStream& append(std::string_view sv);
@@ -49,7 +49,7 @@ protected:
     virtual void DoClean( ) = 0;
 
     Mo*   _moFocusP {nullptr};
-    char* _nameValSeparatorP /*{": "}*/;
+    const char* _nameValSeparatorP {": "};
 };
 
 class MyString : public MyOutStream

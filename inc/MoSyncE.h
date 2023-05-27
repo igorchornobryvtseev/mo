@@ -9,7 +9,7 @@ public:
     static const T_MoType MO_TYPE = MO_SYNCE;
 
     static void BuildScript(MyOutStream* dstP);
-    static void CreateAll( );
+    static void Create( );
     static void DownloadConfig( );
 
     RetStatus DoPerform(ActionType performType, void* dataP) override;
@@ -22,6 +22,5 @@ public:
     ValueDictT<PipeModeStatus, static_cast<uint32_t>(E_AdminState::Disable)> adminState;
 
 private:
-    static void Create(EthNum ethNum);
     RetStatus   CheckConstraints( );
 };
