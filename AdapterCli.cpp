@@ -271,6 +271,7 @@ public:
 
     void Run (CliContext* contextP) override
     {
+        //fTRACE(1, "entry");
         ValueCmd valueCmd;
         valueCmd.SetCli(contextP);
         if ( contextP->CheckExit(true) )
@@ -282,6 +283,7 @@ public:
 
         cliP->_helper.SetAssignCmd(valueCmd.Cmd( ));
         valueCmd.Cmd( )->Run(contextP);
+        //fTRACE(1, "exit");
     }
 
     void PrintCmdHelp ( ) override

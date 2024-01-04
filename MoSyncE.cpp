@@ -10,7 +10,7 @@ constexpr static bool localDebug = true;
 struct ValueSyncEPort : public ValueEthernetPort {
     bool DoIsMatch ( ) override  // this condition should be in sync with condition in CreateAll loop
     {
-        LOG("entry");
+        //LOG("entry");
         EthNum ethNum = GetEthNum( );
         if (ethNum == EthNum(0) || ethNum == EthNum(2))
             return true;
@@ -119,27 +119,6 @@ RetStatus MoSyncE::DoPerform(ActionType performType, void* dataP)
     return RetStatus {E_RetStatus::Ok};
 }
 
-// EH-8010FX-AES-L>show synce
-// synce admin                     : down
-// synce source                    : eth2|eth0
-#if 0
-void MoSyncE::DoHandleShow(ActionType cmdType)
-{
-    LOG("entry");
-    CliReaderIdList<ValueSyncEPortList> id_ports(ATTR_ETH_PORT);
-    CliModifierShow                     modifier(Type( ));
-
-    if ( cmdType == ACTION_CLI_HELP )
-        return Cli_PrintStandardHelpShow(&modifier);
-
-    *cliP >> id_ports >> modifier >> END( );
-    if ( cliP->CheckExit(true) )
-        return;
-
-    Cli_PrintStandardShow(&modifier, nullptr);
-    LOG("exit");
-}
-#else
 void MoSyncE::DoHandleShow(ActionType cmdType)
 {
     LOG("entry");
@@ -155,7 +134,6 @@ void MoSyncE::DoHandleShow(ActionType cmdType)
     Cli_PrintStandardShow(&modifier, nullptr);
     LOG("exit");
 }
-#endif
 
 void MoSyncE::DoHandleSet(ActionType cmdType)
 {
@@ -175,8 +153,9 @@ void MoSyncE::DoHandleSet(ActionType cmdType)
     UINT32 portVal = id_port._valueVal.GetUint32( );
     LOG("ethNum:%d portVal:%d", ethNum.id, portVal);
 
-    MoSyncE* pmP = FindMoT<MoSyncE>(MoId(portVal));
+    MoSyncE* pmP = FindMoT<MoSyncE>();
     if ( pmP == nullptr ) {
+        LOG("SyncE MO object is not found");
         //cliP->ReturnErrorAndPrint(RetStatus {"SyncE MO object is not found for port '{}'. Operation failed.", ethNum});
         return;
     }
