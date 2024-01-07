@@ -111,6 +111,7 @@ struct EthNum {
 
 #include "MoPipeMode.h"
 #include "MoSyncE.h"
+#include "MoAaa.h"
 
 template< class C >
 size_t std_size( const C& c )// -> decltype(c.size());

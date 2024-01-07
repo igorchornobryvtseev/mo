@@ -8,11 +8,12 @@ CPPLIST = main.cpp \
         Database.cpp \
         Mo.cpp \
         MoEthernet.cpp \
-        MoPipeMode.cpp \
-        MoSyncE.cpp \
         MyString.cpp \
         PlaceBuffer.cpp \
-        Value.cpp
+        Value.cpp \
+        MoPipeMode.cpp \
+        MoSyncE.cpp \
+        MoAaa.cpp
 
 OBJLIST=$(CPPLIST:%.cpp=%.o)
 OBJLIST=$(CPPLIST:.cpp=.o)

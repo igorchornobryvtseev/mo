@@ -33,8 +33,12 @@ void AdapterCli(CliContext& contextP);
 int main()
 {
     InitSampleMo( );
+    LOG("---------------");
+
     //MoPipeMode::CreateAll( );
-    MoSyncE::Create( );
+    //MoSyncE::Create( );
+    MoAaa::Create( );
+    LOG("---------------");
 
     // main_ca.cpp: case CadMsgType::CLI_REQUEST_ENTER:
 
@@ -44,12 +48,14 @@ int main()
     //char requestLine[32] = "show pipe-mode";
     //char requestLine[64] = "set pipe-mode eth1 admin enabled";
     //char requestLine[32] = "help set synce";
-    char requestLine[32] = "show synce";
-    CliContextExe context(requestLine);
-    AdapterCli(context);
-    printf("***********************\n");
-    LOG("RESP='%s'", ocli.AsStr());
+    //char requestLine[32] = "show synce";
+    //char requestLine[32] = "set aaa shared-secret ABCDE,";
 
+    CliContextExe context("set aaa shared-secret ABCDE,");
+    LOG("---------------");
+    AdapterCli(context);
+    LOG("---------------");
+    LOG("RESP='%s'", ocli.AsStr());
 
     printf("-----\n");
     return 0;

@@ -245,7 +245,7 @@ Mo* Mo::BuildNew(T_MoType moType, void* extraP)
         // case MO_IEEE1588: return Sys( )->IsSynceIeee1588Supported( ) ? (new (place) MoIeee1588( )) : nullptr;
         // case MO_MOM: return new (place) MoMom( );
         // case MO_CERTIFICATE: return new (place) MoCertificate( );
-        // case MO_AAA: return new (place) MoAaa( );
+        case MO_AAA: return new (place) MoAaa( );
         // case MO_PSE: return Pse( )->IsSupported( ) ? (new (place) MoPse( )) : nullptr;
         // case MO_LAG: return new (place) MoLag( );
 

@@ -2365,24 +2365,25 @@ void AdapterCli (CliContext& context)
             reader.Read( );  // read first word - command
             reader.Read( );  // read second word MO type
 
-            if ( reader._dst == SampleMo(MO_SNMP_USER)->TypeName( ) )
-                ;  // do not log
-            else if ( reader._dst == SampleMo(MO_USER)->TypeName( ) ) {
-                reader.Read( );                   // read user name
-                while ( reader.Read( ).IsOk( ) )  // read attr name
-                {
-                    if ( reader._dst == "passw" ) {
-                        while ( reader.Cur( ) == ' ' )
-                            reader.NextChar( );  // skip whitespaces
-                        int passwPos = reader.GetPos( );
-                        str.RemoveWord(passwPos);
-                        str.InsertSubstr(passwPos, "***");
-                    }
-                    reader.Read( );  // read attr value
-                }
-                LogUserActivity(str.AsStr( ));
-            } else
-                LogUserActivity(context._originalLine.AsStr( ));
+            LOG("reader._dst=%s", reader._dst);
+            // if ( reader._dst == SampleMo(MO_SNMP_USER)->TypeName( ) )
+            //     ;  // do not log
+            // else if ( reader._dst == SampleMo(MO_USER)->TypeName( ) ) {
+            //     reader.Read( );                   // read user name
+            //     while ( reader.Read( ).IsOk( ) )  // read attr name
+            //     {
+            //         if ( reader._dst == "passw" ) {
+            //             while ( reader.Cur( ) == ' ' )
+            //                 reader.NextChar( );  // skip whitespaces
+            //             int passwPos = reader.GetPos( );
+            //             str.RemoveWord(passwPos);
+            //             str.InsertSubstr(passwPos, "***");
+            //         }
+            //         reader.Read( );  // read attr value
+            //     }
+            //     LogUserActivity(str.AsStr( ));
+            // } else
+            //     LogUserActivity(context._originalLine.AsStr( ));
         } else if ( valueCmd == CMD_SPECTRUM ) {
             MyStringT<MAX_CLI_INPUT_LEN> str;
             str.Print(context._originalLine.AsStr( ));
