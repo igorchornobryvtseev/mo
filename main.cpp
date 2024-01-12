@@ -40,23 +40,22 @@ int main()
     MoAaa::Create( );
     LOG("---------------");
 
-    // main_ca.cpp: case CadMsgType::CLI_REQUEST_ENTER:
-
-    // ocli.AttachBuffer(msgP->replyPrintBuffer, CLI_REPLY_PRINT_BUFFER);
-
     // regular execution
     //char requestLine[32] = "show pipe-mode";
     //char requestLine[64] = "set pipe-mode eth1 admin enabled";
     //char requestLine[32] = "help set synce";
     //char requestLine[32] = "show synce";
 
-    CliContextExe context("set aaa shared-secret ABCDE");
-    //CliContextExe context("set aaa shared-secret \"AB, C\"");
     LOG("---------------");
-    AdapterCli(context);
-    LOG("---------------");
+    CliContextExe setContext("set aaa shared-secret ABCDE");
+    AdapterCli(setContext);
     LOG("RESP='%s'", ocli.AsStr());
+    LOG("---------------");
 
-    printf("-----\n");
+    CliContextExe showContext("show aaa");
+    AdapterCli(showContext);
+    LOG("RESP='%s'", ocli.AsStr());
+    LOG("---------------");
+
     return 0;
 }

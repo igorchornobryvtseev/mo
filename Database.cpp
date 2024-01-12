@@ -1,15 +1,6 @@
 #include "igorc_common.h"
 #include "Database.h"
-
-// #include "CaStream.h"
-// #include "DebugFlag.h"
-// #include "HistoryBucket.h"
 #include "Mo.h"
-// #include "MoInventory.h"
-// #include "MoSystem.h"
-// #include "MyTimer.h"
-// #include "SnmpDb.h"
-// #include "StartupConfig.h"
 
 ////////////////////////////////////////////////////
 
@@ -59,9 +50,8 @@ void InitSampleMo ( )
         _visibleMo[i] = true;
     }
 
-    setVisibleMo(MO_DEBUG_LOG, false);
-    setVisibleMo(MO_PORT_DIAG, false);
-    setVisibleMo(MO_MOM, false);
+    // hide some MO if needed
+    //setVisibleMo(MO_DEBUG_LOG, false);
 }
 
 Database* Db ( )
@@ -81,8 +71,6 @@ void TransactionStart ( )
 
 void TransactionEndRestore ( )
 {
-    //	MoCfmMp::_requestMepRebuild = false;
-
     //MyTimer terminationTimer;
 
     ValueMo::_DeleteMo(ACTION_CREATED);
@@ -103,44 +91,32 @@ void AllDownloadConfig(bool isDefaultDatabase);
 
 void TransactionEnd (TransactionEndType endType)
 {
+    LOG("entry");
     //MyTimer terminationTimer;
-
-    /*
-        if( MoCfmMp::_requestMepRebuild)
-        {
-            MoCfmMp::RebuildAllMeps();
-            MoCfmMp::_requestMepRebuild = false;
-        }
-    */
 
     BitMapT<0, MO_MAX> touchedTypes;
 
-    // handle all snmp
-    {
-        for ( int index = 0; index < MAX_NUM_MOS; index++ ) {
-            Mo* moP = Db( )->MoByMainIndex(index);
-            if ( moP != nullptr ) {
-                if ( moP->_transaction._asBits.created && moP->_transaction._asBits.deleted )
-                    continue;  // created and immediate deleted, do nothing
+    for ( int index = 0; index < MAX_NUM_MOS; index++ ) {
+        Mo* moP = Db( )->MoByMainIndex(index);
+        if ( moP != nullptr ) {
+            if ( moP->_transaction._asBits.created && moP->_transaction._asBits.deleted )
+                continue;  // created and immediate deleted, do nothing
 
-                T_MoActionStatus actionStatus = moP->Action( );
+            T_MoActionStatus actionStatus = moP->Action( );
 
-                if ( endType == TRANSACTION_END_CONFIG_DEFAULT )
-                    moP->_properties._asBits.isDefault = true;
-                else if ( actionStatus != ACTION_NONE )
-                    moP->_properties._asBits.isDefault = false;
+            if ( endType == TRANSACTION_END_CONFIG_DEFAULT )
+                moP->_properties._asBits.isDefault = true;
+            else if ( actionStatus != ACTION_NONE )
+                moP->_properties._asBits.isDefault = false;
 
-                if ( actionStatus != ACTION_NONE ) {
-                    moP->DoPostConfig(actionStatus);
+            if ( actionStatus != ACTION_NONE ) {
+                moP->DoPostConfig(actionStatus);
 
-                    T_MoType moType   = moP->Type( );
-                    LOG("index:%d moType:%d", index, moType);
-                    touchedTypes.Set(moP->Type( ), true);
-                }
+                T_MoType moType   = moP->Type( );
+                LOG("index:%d moType:%d", index, moType);
+                touchedTypes.Set(moP->Type( ), true);
             }
         }
-        // for ( int i = 0; i < SnmpAllTables::Me( )->_numOf; i++ )
-        //     SnmpAllTables::Me( )->Get(i)->CompressAndSort( );
     }
 
     if ( endType == TRANSACTION_END_CONFIG_DEFAULT ) {
@@ -182,7 +158,7 @@ void TransactionEnd (TransactionEndType endType)
 
         SampleMo((T_MoType)(*it))->DoSamplePostConfig( );
     }
-    return;
+    //return;
 
     // Transaction Cleanup
     for ( UINT16 index = 0; index < MAX_NUM_MOS; index++ ) {
@@ -196,66 +172,8 @@ void TransactionEnd (TransactionEndType endType)
     //     ocli << "\n" << ((endType == TRANSACTION_END_CONFIG) ? "TransactionConfiguring" : "TransactionNormal");
     //     ocli << "  total time=" << transactionTimer << " msec, termination time=" << terminationTimer << " msec, cli size=" << ocli.GetLen( ) << "\n";
     // }
+    LOG("exit");
 }
-
-// void Ca_ConfiguringDump ( )
-// {
-//     if ( (!GetDebugFlag(DEBUG_FLAG_CONFIGURING)) && (!GetDebugFlag(DEBUG_FLAG_CONFIGURING_DETAILS)) )
-//         return;
-
-//     ValueMo::for_every([] (Mo* moP) {
-//         if ( moP->Action( ) == ACTION_NONE )
-//             return;  // works like continue here
-
-//         ocli << moP << ":  ";
-//         switch ( moP->Action( ) ) {
-//             case ACTION_CREATED:
-//                 ocli << "ACTION_CREATED"
-//                      << "\n";
-//                 if ( GetDebugFlag(DEBUG_FLAG_CONFIGURING_DETAILS) ) {
-//                     for ( Mo::IteratorAttr it = moP->BeginAttr( ); it.IsValid( ); it++ ) {
-//                         ocli << FOCUS(moP) << "      " << it->GetNameP( ) << "=[" << VAL(it->__Id( ));
-//                         UINT32 intValue;
-//                         if ( it->ValueP(moP)->DoGetUint32(&intValue) )
-//                             ocli << " (" << intValue << ")";
-//                         ocli << "]"
-//                              << "\n";
-//                     }
-//                 }
-//                 break;
-//             case ACTION_DELETED:
-//                 ocli << "ACTION_DELETED"
-//                      << "\n";
-//                 break;
-//             case ACTION_MODIFIED:
-//                 ocli << "ACTION_MODIFIED"
-//                      << "\n";
-//                 for ( Mo::IteratorAttr it = moP->BeginAttr( ); it.IsValid( ); it++ ) {
-//                     Value* valueP = it->ValueP(moP);
-//                     if ( GetDebugFlag(DEBUG_FLAG_CONFIGURING_DETAILS) || valueP->IsDataChanged( ) ) {
-//                         ocli << "      " << it->GetNameP( ) << "=[" << valueP;
-//                         UINT32 intValue;
-//                         if ( valueP->DoGetUint32(&intValue) )
-//                             ocli << " (" << intValue << ")";
-//                         ocli << "]";
-//                         if ( valueP->IsDataChanged( ) ) {
-//                             valueP->DoDataControl(DATA_SWAP);
-//                             if ( valueP->DoGetUint32(&intValue) )
-//                                 ocli << "     CHANGED, old=[" << valueP << " (" << intValue << ")]";
-//                             else
-//                                 ocli << "     CHANGED, old=[" << valueP << "]";
-//                             valueP->DoDataControl(DATA_SWAP);
-//                         }
-//                         ocli << "\n";
-//                     }
-//                 }
-//                 break;
-//             default:
-//                 ocli << "unknown action"
-//                      << "\n";
-//         }
-//     });
-// }
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -264,10 +182,12 @@ MainIndex ValueMo::_sortedTable[MAX_NUM_MOS];
 
 void ValueMo::_AddMo(Mo* newMoP)
 {
+    LOG("entry");
     Database* dbP = Db( );
 
     if ( ValueMo::_numOfSorted >= sizeof(_sortedTable) / sizeof(_sortedTable[0]) ) {
         ocli << "LookUpTable::EntryInsert() - no place in lookup table (" << newMoP << ")\n";
+        LOG("error - no place");
         return;
     }
 
@@ -278,6 +198,7 @@ void ValueMo::_AddMo(Mo* newMoP)
     }
     if ( mainIndex >= MAX_NUM_MOS ) {
         ocli << "LookUpTable::AddMoHard() - no place for managed object " << newMoP << "\n";
+        LOG("error - no place");
         return;
     }
 
@@ -308,6 +229,7 @@ void ValueMo::_AddMo(Mo* newMoP)
         if ( compareResult == 0 ) {
             // found
             ocli << "Database::AddMo() - object already exists " << newMoP << "\n";
+            LOG("error - already exist");
             return;
         }
         if ( compareResult > 0 )
@@ -321,10 +243,12 @@ void ValueMo::_AddMo(Mo* newMoP)
     memmove(&ValueMo::_sortedTable[sortedIndexToAdd + 1], &ValueMo::_sortedTable[sortedIndexToAdd], (ValueMo::_numOfSorted - sortedIndexToAdd) * sizeof(MainIndex));
     ValueMo::_sortedTable[sortedIndexToAdd] = mainIndex;
     ValueMo::_numOfSorted++;
+    LOG("exit mainIndex=%d sortedIndexToAdd=%d _numOfSorted=%d", mainIndex, sortedIndexToAdd, _numOfSorted);
 }
 
 void ValueMo::_DeleteMo(T_MoActionStatus action)
 {
+    LOG("entry");
     if ( action == ACTION_NONE ) {
         for ( UINT16 index = 0; index < MAX_NUM_MOS; index++ ) {
             Mo* moP = Db( )->MoByMainIndex(index);
@@ -361,6 +285,7 @@ void ValueMo::_DeleteMo(T_MoActionStatus action)
         srcP++;
     }
     ValueMo::_numOfSorted -= srcP - dstP;
+    LOG("exit");
 }
 
 Mo* ValueMo::MoP( )
@@ -370,9 +295,11 @@ Mo* ValueMo::MoP( )
 
 Mo* ValueMo::_FindMo(T_MoType moType, MoId moNumber)
 {
+    LOG("entry");
     if ( moNumber.AsNumber( ) == 0 ) {
         ValueMo valueMo(moType);
         valueMo.SetFirst( );
+        LOG("exit");
         return valueMo.MoP( );
     }
 
@@ -398,6 +325,7 @@ Mo* ValueMo::_FindMo(T_MoType moType, MoId moNumber)
             // found
             UINT32    sortedIndex = (UINT32)mid;
             MainIndex mainIndex   = ValueMo::_sortedTable[sortedIndex];
+            LOG("exit mainIndex=%d", mainIndex);
             return dbP->MoByMainIndex(mainIndex);
         }
         if ( compareResult > 0 )
@@ -406,6 +334,7 @@ Mo* ValueMo::_FindMo(T_MoType moType, MoId moNumber)
             low = mid + 1;
     }
 
+    LOG("exit - null");
     return nullptr;
 }
 

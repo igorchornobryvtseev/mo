@@ -105,34 +105,11 @@ public:
 
     // std algorithm analogs for ValueMo iterator
 
-    /**    @brief Execute func for each Mo-derived object of given type.
-
-           Before executing checks that object exists (pointer is not null).
-
-           @tparam    MO    Specifies type of Mo object func should be called for
-           @param[in] func  Functional object (function, functor, lambda) that accepts Mo-derived object pointer as argument:
-                                @code{.cpp}
-                                void func(MoObject* ptr);
-                                @endcode
-
-           @par Usage example:
-                @code{.cpp}
-                // Pre c++17 syntax
-                ValueMo::for_each<MoEthernet>([](MoEthernet* pEtehrnet) // <-- note MoEthernet duplication
-                {
-                      pEthernet->setAdmin(ADMIN_UP);
-                });
-
-                // Post c++17 syntax
-                ValueMo::for_each<MoEthernet>([](auto* pEtehrnet) // <-- note MoEthernet duplication removed
-                {
-                      pEthernet->setAdmin(ADMIN_UP);
-                });
-                @endcode
-
-           @see std::for_each
-           @see for_every
-    */
+    // usage:
+    // ValueMo::for_each<MoEthernet>([](auto* pEtehrnet) // <-- note MoEthernet duplication removed
+    // {
+    //       pEthernet->setAdmin(ADMIN_UP);
+    // });
     template<class MO>
     static void for_each (std::function<void(MO*)> func)
     {
@@ -145,26 +122,11 @@ public:
         }
     }
 
-    /*!    @brief Execute func for each Mo object, regardless of its type.
-
-           Before executing checks that object exists (pointer is not null).
-
-           @param[in] func  Functional object (function, functor, lambda) that accepts Mo object pointer as argument:
-                                @code{.cpp}
-                                void func(Mo* ptr);
-                                @endcode
-
-           @par Usage example:
-                @code{.cpp}
-                ValueMo::for_every([](Mo* pMo)
-                {
-                      pMo->setVisible(VISIBLE_ON);
-                });
-                @endcode
-
-           @see std::for_each
-           @see for_each
-     */
+    // usage:
+    // ValueMo::for_every([](Mo* pMo)
+    // {
+    //         pMo->setVisible(VISIBLE_ON);
+    // });
     static void for_every (std::function<void(Mo*)> func)
     {
         ValueMo valueMo;
@@ -175,38 +137,11 @@ public:
         }
     }
 
-    /**        @brief Find first Mo-derived object for which func returns @c true.
-    *
-    *          Execute func for each Mo-derived object of given type while func returns @c false.
-    *          Return pointer to first object that func returned @c true for. Before executing checks that object exists (pointer is not null).
-    *          If no object is found, returns @c nullptr. When func is called, it is guaranteed that pointer is not null.
-    *
-    *          @tparam    MO    Specifies type of Mo object func should be called for
-    *          @param[in] func  Functional object (function, functor, lambda) that accepts Mo-derived object pointer as argument and returns @c bool:
-    *                               @code
-    *                               bool func(MoObject* ptr);
-    *                               @endcode
-    *          @return @li pointer to object
-    *                  @li @c nullptr if no object if found
-    *
-    *          @par Usage example
-    *               @code{.cpp}
-    *               // Pre c++17 syntax
-    *               auto pRunningEthernet = ValueMo::find_if<MoEthernet>([](MoEthernet* pEtehrnet) // <-- note MoEthernet duplication
-    *               {
-    *                     return pEthernet->isAdminUp();
-    *               });
-    *
-                    // Post c++17 syntax
-    *               auto pRunningEthernet = ValueMo::find_if<MoEthernet>([](auto* pEtehrnet) // <-- note MoEthernet duplication removed
-    *               {
-    *                     return pEthernet->isAdminUp();
-    *               });
-    *               @endcode
-    *
-    *          @see std::find_if
-    *          @see find_if_not
-    */
+    // usage:
+    // auto pRunningEthernet = ValueMo::find_if<MoEthernet>([](auto* pEtehrnet) // <-- note MoEthernet duplication removed
+    // {
+    //         return pEthernet->isAdminUp();
+    // });
     template<class MO>
     static MO* find_if (std::function<bool(MO*)> func)
     {
@@ -220,38 +155,6 @@ public:
         return nullptr;
     }
 
-    /**        @brief Find first Mo-derived object for which func returns @c false.
-    *
-    *          Execute func for each Mo object of given type while func returns @c true.
-    *          Return pointer to first object that func returned @c false for. Before executing checks that object exists (pointer is not null).
-    *          If no object is found, returns @c nullptr. When func is called, it is guaranteed that pointer is not null.
-    *
-    *          @tparam    MO    Specifies type of Mo object func should be called for
-    *          @param[in] func  Functional object (function, functor, lambda) that accepts Mo-derived object pointer as argument and returns @c bool:
-    *                               @code
-    *                               bool func(MoObject* ptr);
-    *                               @endcode
-    *          @return @li pointer to object
-    *                  @li @c nullptr if no object if found
-    *
-    *          @par Usage example
-    *               @code{.cpp}
-    *               // Pre c++17 syntax
-    *               auto pStoppedEthernet = ValueMo::find_if_not<MoEthernet>([](MoEthernet* pEtehrnet) // <-- note MoEthernet duplication
-    *               {
-    *                     return pEthernet->isAdminUp();
-    *               });
-    *
-                    // Post c++17 syntax
-    *               auto pStoppedEthernet = ValueMo::find_if_not<MoEthernet>([](auto* pEtehrnet) // <-- note MoEthernet duplication removed
-    *               {
-    *                     return pEthernet->isAdminUp();
-    *               });
-    *               @endcode
-    *
-    *          @see std::find_if_not
-    *          @see find_if
-    */
     template<class MO>
     static MO* find_if_not (std::function<bool(MO*)> func)
     {
@@ -265,142 +168,24 @@ public:
         return nullptr;
     }
 
-    /**
-     *      @brief Checks if at least one Mo-derived object returns @c true for func.
-     *
-     *      Execute func for each object of given type until func returns @c true. When func is called, it is guaranteed that pointer is not null.
-     *
-     *      Truth table for different functions behaviour:
-     *      function | all true,\n none false | some true,\n some false | none true,\n all false
-     *      -------- | :--------------------: | :---------------------: | :--------------------:
-     *      all_of   |    true                |    false                |    true
-     *      any_of   |    true                |    true                 |     false
-     *      none_of  |    false               |    false                |     true
-     *
-     *      @tparam      MO    Specifies type of Mo object func should be called for
-     *      @param[in]   func  Functional object (function, functor, lambda) that accepts Mo-derived object pointer as argument and returns @c bool:
-     *                               @code
-     *                               bool func(MoObject* ptr);
-     *                               @endcode
-     *       @return   @li @c true if at least one object returns @c true for func,
-     *                @li @c false otherwise
-     *
-     *       @par Usage example
-     *           @code{.cpp}
-     *           bool localHostDefined = ValueMo::any_of<MoEthernet>([](MoEthernet* pEthernet)
-     *           {
-     *               return pEthernet->ipAddress().str() == "127.0.0.1";
-     *           });
-     *           @endcode
-     *
-     *      @see std::any_of
-     *      @see all_of
-     *      @see none_of
-     */
     template<class MO>
     static bool any_of (std::function<bool(MO*)> func)
     {
         return ValueMo::find_if<MO>(func) != nullptr;
     }
 
-    /**
-     *      @brief Checks if all Mo-derived objects return @c false for func.
-     *
-     *      Execute func for each Mo object of given type until func returns @c true. When func is called, it is guaranteed that pointer is not null.
-     *
-     *      Truth table for different functions behaviour:
-     *      function | all true,\n none false | some true,\n some false | none true,\n all false
-     *      -------- | :--------------------: | :---------------------: | :--------------------:
-     *      all_of   |    true                |    false                |    true
-     *      any_of   |    true                |    true                 |     false
-     *      none_of  |    false               |    false                |     true
-     *
-     *      @tparam      MO    Specifies type of Mo object func should be called for
-     *      @param[in]   func  Functional object (function, functor, lambda) that accepts Mo-derived object pointer as argument and returns @c bool:
-     *                               @code
-     *                               bool func(MoObject* ptr);
-     *                               @endcode
-     *           @return   @li @c true if all objects return @c false for func,
-     *                 @li @c false otherwise
-     *
-     *       @par Usage example
-     *       @code{.cpp}
-     *       bool allLldpEnabled = ValueMo::none_of<MoLldp>([](MoLldp* pLldp)
-     *       {
-     *           return pLldp->adminStatus() == LLDP_ADMIN_DISABLE;
-     *           });
-     *       @endcode
-     *
-     *      @see std::none_of
-     *      @see any_of
-     *      @see all_of
-     */
     template<class MO>
     static bool none_of (std::function<bool(MO*)> func)
     {
         return ValueMo::find_if<MO>(func) == nullptr;
     }
 
-    /**
-     *      @brief Checks if all Mo-derived objects return @c true for func.
-     *
-     *      Execute func for each Mo object of given type until func returns @c false. When func is called, it is guaranteed that pointer is not null.
-     *
-     *      Truth table for different functions behaviour:
-     *          function | all true,\n none false | some true,\n some false | none true,\n all false
-     *      -------- | :--------------------: | :---------------------: | :--------------------:
-     *      all_of   |    true                |    false                |    true
-     *      any_of   |    true                |    true                 |     false
-     *      none_of  |    false               |    false                |     true
-     *
-     *      @tparam      MO    Specifies type of Mo object func should be called for
-     *      @param[in]   func  Functional object (function, functor, lambda) that accepts Mo-derived object pointer as argument and returns @c bool:
-     *                               @code
-     *                               bool func(MoObject* ptr);
-     *                               @endcode
-     *           @return   @li @c true if all objects return @c true for func,
-     *                 @li @c false otherwise
-     *
-     *       @par Usage example
-     *       @code{.cpp}
-     *       bool allIpAreStatic = ValueMo::all_of<MoIp>([](MoIp* pIp)
-     *       {
-     *           return pIp->isStatic();
-     *       });
-     *       @endcode
-     *
-     *      @see std::all_of
-     *      @see any_of
-     *      @see none_of
-     */
     template<class MO>
     static bool all_of (std::function<bool(MO*)> func)
     {
         return ValueMo::find_if_not<MO>(func) == nullptr;
     }
 
-    /**
-     *      @brief Count number for Mo-derived objects that return @c true for func.
-     *
-     *      Execute func for each Mo object of given type and count number of those return @c true. When func is called, it is guaranteed that pointer is not null.
-     *
-     *      @tparam      MO    Specifies type of Mo object func should be called for
-     *      @param[in]   func  Functional object (function, functor, lambda) that accepts Mo-derived object pointer as argument and returns @c bool:
-     *                               @code
-     *                               bool func(MoObject* ptr);
-     *                               @endcode
-     *       @return   number of objects
-     *
-     *       @par Usage example
-     *       @code{.cpp}
-     *       uint ipv6Count = ValueMo::count_if<MoIpV6>([](MoIpV6* pIp)
-     *       {
-     *           return pIp->ip() != IpV6Address::ZERO;
-     *       });
-     *       @endcode
-     *
-     *      @see std::count_if
-     */
     template<class MO>
     static size_t count_if (std::function<bool(MO*)> func)
     {
