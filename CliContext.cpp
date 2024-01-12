@@ -40,6 +40,7 @@ bool IsTerm (char cur, const char* termsP)
 
 RetStatus WordReader::ReadWord(const char* termsP)
 {
+    //LOG("_srcP='%s'", _srcP ? _srcP : "NULL");
     _dst.Clean( );
 
     while ( Cur( ) == ' ' )  // skip whitespaces
@@ -218,6 +219,7 @@ bool CliContextExe::CheckExit(bool printError)
         } else {
             ocli << "\n"
                  << "%% " << _status.message( );
+            LOG("ERROR '%s'", _status.message( ).c_str());
             if ( _status.code( ) != E_RetStatus::Execution ) {
                 MyStringT<512> tmp;
                 tmp.Print(_pos, _originalLine.AsStr( ));
@@ -234,6 +236,7 @@ bool CliContextExe::CheckExit(bool printError)
 
 void WordReader::ReadTo(END end)
 {
+    LOG("entry");
     (void)end;
     if ( !CheckExit(false) ) {
         if ( !IsExeMode( ) )
@@ -241,19 +244,27 @@ void WordReader::ReadTo(END end)
         else if ( !IsEol( ) )
             ReturnError(RetStatus {E_RetStatus::TooManyParams});
     }
+    LOG("exit");
 }
 
 WordReader* WordReader::ReadTo(Value* dstP)
 {
-    if ( !CheckExit(false) )
+    LOG("entry");
+    if ( !CheckExit(false) ) {
+        LOG("goon");
         dstP->SetCli(this);
+    }
+    LOG("exit");
     return this;
 }
 
 CliContext& CliContext::SetAttrList(AttrListSet& dstR, Mo* dstMoP)
 {
-    if ( CheckExit(false) )
+    LOG("entry");
+    if ( CheckExit(false) ) {
+        LOG("exit - CheckExit 1");
         return *this;
+    }
 
     while ( (!IsEol( )) /*|| NowAutoComplete( )*/ ) {
         UINT32 i;
@@ -267,8 +278,10 @@ CliContext& CliContext::SetAttrList(AttrListSet& dstR, Mo* dstMoP)
         // read attrName
         if ( !CheckExit(false) )
             attrName.SetCli(this);
-        if ( CheckExit(false) )
+        if ( CheckExit(false) ) {
+            LOG("exit - CheckExit 2");
             return *this;
+        }
 
         for ( i = 0; i < dstR._numOf; i++ ) {
             if ( dstR.GetAttr(i) != (T_AttrType)attrName.GetUint32( ) )
@@ -289,8 +302,10 @@ CliContext& CliContext::SetAttrList(AttrListSet& dstR, Mo* dstMoP)
             // of values, which means that when Tab is pressed then no space will be added.
             _isWordPartOfList = valueP->IsWordInCliPartOfList( );
         }
-        if ( CheckExit(false) )
+        if ( CheckExit(false) ) {
+            LOG("exit - CheckExit 3");
             return *this;
+        }
 
         //		if(attrName.GetNumOf() == 0)
         //			break; // all are handled already
@@ -301,11 +316,13 @@ CliContext& CliContext::SetAttrList(AttrListSet& dstR, Mo* dstMoP)
         if ( dstR.IsMandat(i) && !dstR.IsUsed(i) ) {
             MyStringT<128> tmp;
             tmp << FOCUS(dstMoP) << NAME(dstR.GetAttr(i)) << " is mandatory but not specified. Operation failed.";
+            LOG("exit - no mandatory");
             ReturnError(RetStatus {tmp});
             return *this;
         }
     }
 
+    LOG("exit");
     return *this;
 }
 

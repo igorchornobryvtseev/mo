@@ -153,26 +153,38 @@ void ValueDictionary::DoGetCliHelp( )
 
 void ValueDictionary::DoSetCli(WordReader* inP)
 {
+    LOG("entry");
     if ( inP->NowAutoComplete( ) ) {
         DictAutoCompletion dict;
         DoGetCliAutoCompletion(&dict);
 
         inP->ReturnAutoComplete(&dict);
+        LOG("exit - autocomplete");
         return;
     }
 
-    if ( !inP->Read( ).IsOk( ) )
+    if ( !inP->Read( ).IsOk( ) ) {
+        LOG("exit - read is not ok");
         return;
+    }
+    LOG("inP->_dst='%s'", inP->_dst.AsStr());
 
     for ( Start( ); IsValid( ); Next( ) ) {
-        if ( !DoIsMatch( ) )
+        if ( !DoIsMatch( ) ) {
+            LOG("----- not do is match here");
             continue;
+        }
 
         MyStringT<128> current;
         DoGetCli(&current);
-        if ( current == inP->_dst )
+        LOG("current='%s'", current.AsStr());
+        if ( current == inP->_dst ) {
+            LOG("exit - success");
             return;
+        }
     }
+    LOG("exit - parsing error is here");
+    //LOG("inP->_dst='%s'", inP->_dst.AsStr());
     inP->SetStatus(RetStatus {E_RetStatus::Parsing});
 }
 

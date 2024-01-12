@@ -179,9 +179,14 @@ public:
     RetStatus                    _status;
     UINT32                       _pos {0};
     bool                         _isWordPartOfList {false};
+// public:
+//     const char* _srcP; // moved from WordReaderString
 };
 
 struct WordReaderString : public WordReader {
+    // WordReaderString(const char* srcP) {_srcP = srcP; }
+    // WordReaderString(MyString* srcP)  { _srcP = srcP->AsStr( );}
+
     WordReaderString(const char* srcP) : _srcP((char*)srcP) { }
 
     WordReaderString(MyString* srcP) : _srcP(srcP->AsStr( )) { }
@@ -202,7 +207,7 @@ struct WordReaderString : public WordReader {
         return !Status( ).ok( );
     }
 
-    char* _srcP;
+    const char* _srcP; //moved to WordReader
 };
 
 struct HelperData {

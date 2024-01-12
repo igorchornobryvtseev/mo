@@ -240,8 +240,10 @@ public:
     {
         static DictionaryT<200> myDictionary;
         if ( myDictionary.IsEmpty( ) ) {
-            for ( UINT32 i = 0; Cmd(i) != nullptr; i++ )
+            for ( UINT32 i = 0; Cmd(i) != nullptr; i++ ) {
+                LOG("add [%u] '%s'", i, Cmd(i)->_cmdName);
                 myDictionary.Add(Cmd(i)->_cmdType, Cmd(i)->_cmdName);
+            }
         }
 
         return &myDictionary;
@@ -2319,6 +2321,7 @@ void AdapterCli (CliContext& context)
     // read command
     ValueCmd valueCmd;
     valueCmd.SetCli(&context);
+    // igorc: below can be commented out
     if ( context.CheckExit(true) ) {
         PrintErrorToFile(context);
         return;
@@ -2331,6 +2334,7 @@ void AdapterCli (CliContext& context)
 
     // perform the command
     valueCmd.Cmd( )->Run(&context);
+    //return; // igorc - use if fail?
 
     // terminate transaction: normal or restoration
     switch ( valueCmd.GetUint32( ) ) {

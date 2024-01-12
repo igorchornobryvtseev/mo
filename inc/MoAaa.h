@@ -31,6 +31,8 @@ DICTIONARY_3(AuthModeTable, E_AuthMode::Local, "local", E_AuthMode::Radius, "rad
 using ValueAuthMode = ValueDictT<AuthModeTable, static_cast<uint>(E_AuthMode::Local)>;
 
 struct ValueAuthSecret : ValueStringT<256> {
+    // void DoSetCli(WordReader* inP) override;
+    // bool IsWordInCliPartOfList ( ) override { return true; }
 };
 
 struct ValueAuthConnectTimeout : ValueLongRangeT<1, 10, 3> {

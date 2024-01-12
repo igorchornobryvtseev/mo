@@ -34,7 +34,7 @@ public:
         if ( remainedLen <= 0 )
             return;
         int addLen = vsnprintf(_bufferP + _len, remainedLen, formatP, *listP);
-        LOG("_bufferP[%d]='%s'", addLen, _bufferP);
+        //LOG("_bufferP[%d]='%s'", addLen, _bufferP);
         if ( addLen >= remainedLen )
             addLen = remainedLen - 1;
         _len += addLen;

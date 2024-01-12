@@ -1,6 +1,21 @@
 #include "igorc_common.h"
 #include "MoAaa.h"
 
+# if 0
+void ValueAuthSecret::DoSetCli(WordReader* inP)
+{
+    if ( !inP->Read( ).IsOk( ) ) {
+        LOG("exit - read is not ok");
+        return;
+    }
+    LOG("inP->_dst='%s'", inP->_dst.AsStr());
+    // RetStatus retStatus = inP->ReadWord( );
+    // LOG("ok=%d", retStatus.ok());
+    // LOG("inP->_dst='%s'", inP->_dst.AsStr());
+    //inP->SetStatus(E_RetStatus::Ok);
+}
+#endif
+/////////////////////////////////////////////////////////////////////
 ////PAM_Info_S* PamInfo( );
 
 void MoAaa::DownloadConfig( )
@@ -91,8 +106,10 @@ void MoAaa::DoHandleShow(ActionType cmdType)
         return Cli_PrintStandardHelpShow(&modifier);
 
     *cliP >> modifier >> END( );
-    if ( cliP->CheckExit(true) )
+    if ( cliP->CheckExit(true) ) {
+        LOG("exit - CheckExit==true");
         return;
+    }
 
     Cli_PrintStandardShow(&modifier, nullptr);
     LOG("exit");
@@ -108,8 +125,10 @@ void MoAaa::DoHandleSet(ActionType cmdType)
         return Cli_PrintStandardHelpSet(&attrList);
 
     *cliP >> attrList >> END( );
-    if ( cliP->CheckExit(true) )
+    if ( cliP->CheckExit(true) ) {
+        LOG("exit - CheckExit==true");
         return;
+    }
 
     Mo* moP = FindMo(Type( ));
     if ( moP == nullptr )

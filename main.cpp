@@ -49,9 +49,9 @@ int main()
     //char requestLine[64] = "set pipe-mode eth1 admin enabled";
     //char requestLine[32] = "help set synce";
     //char requestLine[32] = "show synce";
-    //char requestLine[32] = "set aaa shared-secret ABCDE,";
 
-    CliContextExe context("set aaa shared-secret ABCDE,");
+    CliContextExe context("set aaa shared-secret ABCDE");
+    //CliContextExe context("set aaa shared-secret \"AB, C\"");
     LOG("---------------");
     AdapterCli(context);
     LOG("---------------");
