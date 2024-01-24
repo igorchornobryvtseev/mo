@@ -860,10 +860,15 @@ RetStatus ValueStringUnquoted::SetString(std::string_view view)
 {
     std::string      str {view};
     LOG("entry '%s'", str.c_str());
+#if 0
     WordReaderString reader(str.c_str( ));
     DoSetCli(&reader);
     LOG("exit");
     return reader.Status( );
+#else
+    set(view);
+    return RetStatus {E_RetStatus::Ok};
+#endif
 }
 
 

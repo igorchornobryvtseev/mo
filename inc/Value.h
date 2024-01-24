@@ -1099,9 +1099,10 @@ public:
 
     UINT32 GetMaxLen ( ) override { return MAX; }
 
-    void set (std::string_view src) override { 
-        LOG("entry '%s'", src);
-        _value.Set(src); 
+    void set (std::string_view view) override { 
+        std::string      str {view};
+        LOG("entry '%s'", str.c_str());
+        _value.Set(view); 
     }
 
     MyStringT<MAX>* GetStringP ( ) { return &_value; }

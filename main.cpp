@@ -51,8 +51,8 @@ int main()
     // LOG("---------------");
 
     LOG("---------------");
-    //CliContextExe setContext("set aaa shared-secret \"ABC DE\" mode local");
-    CliContextExe setContext("set aaa shared-secret ABC mode local");
+    CliContextExe setContext("set aaa shared-secret \"ABC DE\" mode local");
+    //CliContextExe setContext("set aaa shared-secret ABC mode local");
     AdapterCli(setContext);
     LOG("RESP='%s'", ocli.AsStr());
     LOG("---------------");
