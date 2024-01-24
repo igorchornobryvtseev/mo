@@ -398,7 +398,7 @@ void AdapterCli (CliContext& context)
 {
     cliP = &context;
 
-    LOG("processing cli command %s\n", context._originalLine.AsStr());
+    LOG("processing cli command '%s'\n", context._originalLine.AsStr());
     // if ( special_character_exist(context._originalLine.view( ), E_ProhibitedCharactersSet::Cli) ) {
     //     cliP->ReturnErrorAndPrint(RetStatus {"Input contains not allowed symbols. Operation failed."});
     //     PrintErrorToFile(context);
