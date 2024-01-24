@@ -48,8 +48,7 @@ public:
     void Print (MyOutStream* outP) { DoGetCli(outP); }
 
     void      PrintHelp( );
-    RetStatus SetString(const char* stringP);
-    RetStatus SetString(std::string_view view);
+    virtual   RetStatus SetString(std::string_view view);
     void      SetCli(WordReader* contextP);  // doesn't print error
 
     bool operator== (const char* stringP);
@@ -121,16 +120,6 @@ public:
 
     // word is part of a list in Cli if it can be separated by a comma or a period
     virtual bool IsWordInCliPartOfList( ) = 0;
-
-    // virtual void DoGetXmlHelp(Xml* xmlP);
-
-    // virtual void DoGetSnmp (SnmpVariable* varP) { (void)varP; }
-
-    // virtual bool DoSetSnmp (SnmpVariable* varP)
-    // {
-    //     (void)varP;
-    //     return false;
-    // }
 
 private:
     Value& operator= (const Value& secondR);
@@ -1098,18 +1087,6 @@ public:
 
     void DoSetCli(WordReader* inP) override;
     bool IsWordInCliPartOfList( ) override;
-
-    // void DoGetSnmp (SnmpVariable* outP) override { *outP << view( ); }
-
-    // bool DoSetSnmp (SnmpVariable* varP) override
-    // {
-    //     char*  srcP;
-    //     size_t srcLen;
-    //     bool   result = varP->AsString(srcP, srcLen);
-    //     if ( result )
-    //         SetIntValue(srcP);
-    //     return result;
-    // }
 };
 
 // ***************************************************************
@@ -1122,7 +1099,10 @@ public:
 
     UINT32 GetMaxLen ( ) override { return MAX; }
 
-    void set (std::string_view src) override { _value.Set(src); }
+    void set (std::string_view src) override { 
+        LOG("entry '%s'", src);
+        _value.Set(src); 
+    }
 
     MyStringT<MAX>* GetStringP ( ) { return &_value; }
 
@@ -1148,6 +1128,13 @@ public:
 protected:
     MyStringT<MAX> _value;
     MyStringT<MAX> _keepValue;
+};
+
+class ValueStringUnquoted : public ValueStringT<256>
+{
+public:
+    void DoSetCli(WordReader* inP) override;
+    virtual RetStatus SetString(std::string_view view);
 };
 
 class ValueString16 : public ValueStringT<16>

@@ -91,18 +91,13 @@ bool Value::operator== (const char* stringP)
     return (out == stringP);
 }
 
-RetStatus Value::SetString(const char* stringP)
-{
-    WordReaderString reader(stringP);
-    DoSetCli(&reader);
-    return reader.Status( );
-}
-
 RetStatus Value::SetString(std::string_view view)
 {
     std::string      str {view};
+    LOG("entry '%s'", str.c_str());
     WordReaderString reader(str.c_str( ));
     DoSetCli(&reader);
+    LOG("exit");
     return reader.Status( );
 }
 
@@ -776,6 +771,7 @@ UINT32 ValueLong::DoDataControl(T_DataControl dataControl)
 
 void ValueString::DoGetCli(MyOutStream* outP)
 {
+    LOG("entry - print to stream _value='%s'", GetP( ));
     outP->Print("%s", GetP( ));
 }
 
@@ -803,24 +799,73 @@ bool ValueString::EndsWith(const char* secondP)
 
 void ValueString::DoSetCli(WordReader* inP)
 {
-    if ( inP->HandleAutoComplete( ) )
+    LOG("entry");
+    if ( inP->HandleAutoComplete( ) ){
+        LOG("error");
         return;
+    }
 
-    if ( !inP->Read( ).IsOk( ) )
+    if ( !inP->Read( ).IsOk( ) ) {
+        LOG("error");
         return;
+    }
 
+    LOG("read from stream - parsed _value='%s'", inP->_dst.AsStr( ));
     SetIntValue(inP->_dst.AsStr( ));
 
     if ( strlen(inP->_dst.AsStr( )) > GetMaxLen( ) )
         inP->SetStatus(E_RetStatus::Range);
     else
         inP->SetStatus(E_RetStatus::Ok);
+    LOG("exit");
 }
 
 bool ValueString::IsWordInCliPartOfList( )
 {
     return false;
 }
+//////////////////////////////////////////////////////////////////
+void ValueStringUnquoted::DoSetCli(WordReader* inP)
+{
+    LOG("entry");
+#if 0
+    inP->ReadLine();
+#else
+    if ( inP->HandleAutoComplete( ) ){
+        LOG("error");
+        return;
+    }
+
+    if ( !inP->Read( ).IsOk( ) ) {
+        LOG("error");
+        return;
+    }
+#endif
+
+    std::string s = inP->_dst.AsStr( );
+    size_t len = s.size();
+    if (len >= 2 && s[0] == '"' && s[len-1] == '"')
+        s = s.substr(1, len - 2);
+    LOG("read from stream - stripped _value='%s'", s.c_str());
+    SetIntValue(s.c_str());
+
+    if ( strlen(s.c_str()) > GetMaxLen( ) )
+        inP->SetStatus(E_RetStatus::Range);
+    else
+        inP->SetStatus(E_RetStatus::Ok);
+    LOG("exit");
+}
+
+RetStatus ValueStringUnquoted::SetString(std::string_view view)
+{
+    std::string      str {view};
+    LOG("entry '%s'", str.c_str());
+    WordReaderString reader(str.c_str( ));
+    DoSetCli(&reader);
+    LOG("exit");
+    return reader.Status( );
+}
+
 
 // ***************************************************************
 

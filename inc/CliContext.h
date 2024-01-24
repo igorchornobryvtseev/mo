@@ -127,6 +127,8 @@ public:
 
     ListElement ReadListElement( );
 
+    void ReadLine();
+
     bool IsOk ( ) const { return _status.ok( ); }
 
     bool operator== (const char* stringP)

@@ -124,11 +124,14 @@ void MoAaa::DoHandleSet(ActionType cmdType)
     if ( cmdType == ACTION_CLI_HELP )
         return Cli_PrintStandardHelpSet(&attrList);
 
+    LOG("----- before stream operator")
     *cliP >> attrList >> END( );
+    LOG("----- after stream operator")
     if ( cliP->CheckExit(true) ) {
         LOG("exit - CheckExit==true");
         return;
     }
+    LOG("----- after CheckExit")
 
     Mo* moP = FindMo(Type( ));
     if ( moP == nullptr )

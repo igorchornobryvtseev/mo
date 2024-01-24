@@ -40,13 +40,15 @@ bool IsTerm (char cur, const char* termsP)
 
 RetStatus WordReader::ReadWord(const char* termsP)
 {
-    //LOG("_srcP='%s'", _srcP ? _srcP : "NULL");
+    LOG("entry");
     _dst.Clean( );
 
     while ( Cur( ) == ' ' )  // skip whitespaces
         NextChar( );
-    if ( Cur( ) == 0 )
+    if ( Cur( ) == 0 ) {
+        LOG("exit-empty _dst='%s'", _dst.AsStr());
         return E_RetStatus::Empty;
+    }
 
     if ( Cur( ) == '\"' ) {
         _dst.Print("%c", Cur( ));
@@ -54,11 +56,14 @@ RetStatus WordReader::ReadWord(const char* termsP)
 
         for ( ; (Cur( ) != 0) && (Cur( ) != '\"'); NextChar( ) )
             _dst.Print("%c", Cur( ));
-        if ( Cur( ) == 0 )
+        if ( Cur( ) == 0 ) {
+            LOG("exit-no-trail-quote _dst='%s'", _dst.AsStr());
             return E_RetStatus::Parsing;
+        }
 
         _dst.Print("%c", Cur( ));
         NextChar( );
+        LOG("exit-quotes-ok _dst='%s'", _dst.AsStr());
         return E_RetStatus::Ok;
     }
 
@@ -66,6 +71,7 @@ RetStatus WordReader::ReadWord(const char* termsP)
     if ( (Cur( ) == ',') || IsTerm(Cur( ), termsP) ) {
         _dst.Print("%c", Cur( ));
         NextChar( );
+        LOG("exit-with-comma _dst='%s'", _dst.AsStr());
         return E_RetStatus::Ok;
     }
 
@@ -74,6 +80,7 @@ RetStatus WordReader::ReadWord(const char* termsP)
         _dst.Print("%c", Cur( ));
         NextChar( );
     }
+    LOG("exit-regular _dst='%s'", _dst.AsStr());
     return E_RetStatus::Ok;
 }
 
@@ -122,6 +129,18 @@ ListElement WordReader::ReadListElement( )
 
     //	while(Cur() == ' ') NextChar(); // skip spaces
     //	return E_RetStatus::Ok;
+}
+
+void WordReader::ReadLine()
+{
+    LOG("entry");
+    _dst.Clean( );
+
+    while ( Cur( ) != 0 ) {
+        _dst.Print("%c", Cur( ));
+        NextChar( );
+    }
+    LOG("exit _dst='%s'", _dst.AsStr());
 }
 
 //////////////////////////////////////////////////////////
@@ -236,7 +255,7 @@ bool CliContextExe::CheckExit(bool printError)
 
 void WordReader::ReadTo(END end)
 {
-    LOG("entry");
+    LOG("entry - called 2nd");
     (void)end;
     if ( !CheckExit(false) ) {
         if ( !IsExeMode( ) )
@@ -249,7 +268,7 @@ void WordReader::ReadTo(END end)
 
 WordReader* WordReader::ReadTo(Value* dstP)
 {
-    LOG("entry");
+    LOG("entry - called 1st");
     if ( !CheckExit(false) ) {
         LOG("goon");
         dstP->SetCli(this);

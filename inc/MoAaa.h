@@ -30,7 +30,7 @@ constexpr const char* to_string (E_AuthMode e, const char* defValue = nullptr)
 DICTIONARY_3(AuthModeTable, E_AuthMode::Local, "local", E_AuthMode::Radius, "radius", E_AuthMode::Tacacs, "tacacs");
 using ValueAuthMode = ValueDictT<AuthModeTable, static_cast<uint>(E_AuthMode::Local)>;
 
-struct ValueAuthSecret : ValueStringT<256> {
+struct ValueAuthSecret : ValueStringUnquoted {
     // void DoSetCli(WordReader* inP) override;
     // bool IsWordInCliPartOfList ( ) override { return true; }
 };

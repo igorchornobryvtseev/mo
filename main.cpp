@@ -41,13 +41,18 @@ int main()
     LOG("---------------");
 
     // regular execution
-    //char requestLine[32] = "show pipe-mode";
-    //char requestLine[64] = "set pipe-mode eth1 admin enabled";
-    //char requestLine[32] = "help set synce";
-    //char requestLine[32] = "show synce";
+    // LOG("---------------");
+    // CliContextExe context("show pipe-mode");
+    // CliContextExe context("set pipe-mode eth1 admin enabled");
+    // CliContextExe context("help set synce");
+    // CliContextExe context("show synce");
+    // AdapterCli(context);
+    // LOG("RESP='%s'", ocli.AsStr());
+    // LOG("---------------");
 
     LOG("---------------");
-    CliContextExe setContext("set aaa shared-secret ABCDE");
+    //CliContextExe setContext("set aaa shared-secret \"ABC DE\" mode local");
+    CliContextExe setContext("set aaa shared-secret ABC mode local");
     AdapterCli(setContext);
     LOG("RESP='%s'", ocli.AsStr());
     LOG("---------------");

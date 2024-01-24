@@ -426,6 +426,7 @@ bool Mo::Has(T_MoType moType)
 
 bool Mo::CopySampleTo(Mo* dstP, AttrListSet* attrListP)
 {
+    LOG("entry");
     if ( cliP->IsError( ) || dstP == nullptr )
         return false;
 
@@ -452,6 +453,7 @@ bool Mo::CopySampleTo(Mo* dstP, AttrListSet* attrListP)
             MyStringT<MAX_CLI_INPUT_LEN> strVal;
             strVal << FOCUS(sampleP) << VAL(attrId);
             Value*    valueP = dstP->AttrValue(attrId);
+            LOG("strVal '%s'", strVal.AsStr( ));
             RetStatus result = valueP->SetString(strVal.AsStr( ));
             if ( !result.ok( ) ) {
                 cliP->ReturnErrorAndPrint(result);
@@ -465,6 +467,7 @@ bool Mo::CopySampleTo(Mo* dstP, AttrListSet* attrListP)
         ocli << "\nSet done: " << dstP;
     else
         cliP->ReturnErrorAndPrint(result);
+    LOG("exit");
     return result.ok( );
 }
 
