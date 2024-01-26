@@ -825,23 +825,35 @@ bool ValueString::IsWordInCliPartOfList( )
     return false;
 }
 //////////////////////////////////////////////////////////////////
+#if 0
+[virtual void ValueStringUnquoted::DoSetCli(WordReader*):835] before Read CliContextExe 'set aaa shared-secret ABC' _pos=21 s = ' ABC'
+[virtual void ValueStringUnquoted::DoSetCli(WordReader*):854] after Read CliContextExe 'set aaa shared-secret ABC' _pos=25 s = ''
+#endif
+
 void ValueStringUnquoted::DoSetCli(WordReader* inP)
 {
     LOG("entry");
-#if 0
-    inP->ReadLine();
-#else
-    if ( inP->HandleAutoComplete( ) ){
-        LOG("error");
-        return;
-    }
+    std::string inStr;
+    std::string outStr;
+    ssize_t     startPos = 0;
+    
+    CliContext* p = dynamic_cast<CliContextExe*>(inP);
+    assert(p);
+    
+    const char* s = p->_originalLine.AsStr() + p->_pos;
+    LOG("before Read CliContextExe '%s' _pos=%u s = '%s'", p->_originalLine.AsStr(), p->_pos, s);
 
+#if 0
     if ( !inP->Read( ).IsOk( ) ) {
         LOG("error");
         return;
     }
-#endif
 
+    if (p) {
+        const char* s = p->_originalLine.AsStr() + p->_pos;
+        LOG("after Read CliContextExe '%s' _pos=%u s = '%s'", p->_originalLine.AsStr(), p->_pos, s);
+    }
+    
     std::string s = inP->_dst.AsStr( );
     size_t len = s.size();
     if (len >= 2 && s[0] == '"' && s[len-1] == '"')
@@ -853,6 +865,23 @@ void ValueStringUnquoted::DoSetCli(WordReader* inP)
         inP->SetStatus(E_RetStatus::Range);
     else
         inP->SetStatus(E_RetStatus::Ok);
+
+#else
+    inP->_dst.Clean( );
+    inStr = std::string(p->_originalLine.AsStr());
+    startPos = inP->GetPos();
+    ssize_t n = parseQuoteStr(inStr, startPos, outStr);
+    LOG("'%s' -> '%s' n=%lld", inStr.c_str(), outStr.c_str(), n);
+    SetIntValue(outStr.c_str());
+    
+    
+    inP->_dst.Set(outStr);
+    inP->SetPos(n);
+    //p->_pos = n;
+    inP->SetStatus(n >= 0 ? E_RetStatus::Ok : E_RetStatus::Range);
+    
+#endif
+    
     LOG("exit");
 }
 

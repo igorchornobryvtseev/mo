@@ -181,8 +181,6 @@ public:
     RetStatus                    _status;
     UINT32                       _pos {0};
     bool                         _isWordPartOfList {false};
-// public:
-//     const char* _srcP; // moved from WordReaderString
 };
 
 struct WordReaderString : public WordReader {
